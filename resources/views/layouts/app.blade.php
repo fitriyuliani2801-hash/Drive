@@ -67,7 +67,19 @@
             background: #f1f5f9;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #93c5fd;
+            background: #0f172a;
+            border-radius: 9999px;
+        }
+
+        .menu-scrollbar::-webkit-scrollbar {
+            height: 8px;
+            width: 0px;
+        }
+        .menu-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .menu-scrollbar::-webkit-scrollbar-thumb {
+            background: #0f172a;
             border-radius: 9999px;
         }
 
@@ -120,7 +132,7 @@
     <!-- BREAKING NEWS MARQUEE TICKER (RED & WHITE TV STYLE) -->
     <div class="bg-gradient-to-r from-crimson-700 via-rose-700 to-crimson-800 text-white text-xs font-semibold py-2.5 px-4 shadow-xs border-b border-red-800">
         <div class="max-w-7xl mx-auto flex items-center gap-3">
-            <span class="shrink-0 flex items-center gap-1.5 bg-black/40 px-3 py-1 rounded-full uppercase tracking-wider font-extrabold text-[10px] text-amber-300 border border-white/20 font-heading">
+            <span class="shrink-0 flex items-center gap-1.5 bg-black/40 px-3 py-1 rounded-md uppercase tracking-wider font-extrabold text-[10px] text-amber-300 border border-white/20 font-heading">
                 <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
                 🔴 BREAKING NEWS
             </span>
@@ -144,7 +156,7 @@
                 
                 <!-- Logo & Subtitle -->
                 <a href="{{ route('home') }}" class="flex items-center gap-3.5 group">
-                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-crimson-700 via-brand-600 to-blue-600 p-0.5 shadow-lg shadow-crimson-600/20 group-hover:scale-105 transition-transform duration-300">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-crimson-700 via-brand-600 to-blue-600 p-0.5 group-hover:scale-105 transition-transform duration-300">
                         <div class="w-full h-full bg-white rounded-[14px] flex items-center justify-center">
                             <i class="ri-newspaper-fill text-3xl text-crimson-700"></i>
                         </div>
@@ -160,12 +172,11 @@
 
                 <!-- Header Search Bar -->
                 <form action="{{ route('articles.index') }}" method="GET" class="w-full md:w-auto flex-1 max-w-lg">
-                    <div class="relative flex items-center shadow-xs rounded-2xl border border-slate-300 bg-slate-50 focus-within:bg-white focus-within:border-brand-600 focus-within:shadow-md transition-all p-1">
-                        <i class="ri-search-2-line text-slate-400 text-lg ml-3"></i>
-                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari berita terkini, kata kunci, isu perkotaan..." class="w-full px-3 py-2 bg-transparent text-xs text-slate-900 focus:outline-none font-medium">
-                        <button type="submit" class="px-5 py-2.5 rounded-xl bg-crimson-700 hover:bg-crimson-800 text-white font-extrabold text-xs transition-all font-heading shrink-0 shadow-xs">
-                            Cari Berita
+                    <div class="relative flex items-center shadow-xs rounded-md border border-slate-300 bg-slate-50 focus-within:bg-white focus-within:border-brand-600 focus-within:shadow-md transition-all p-1">
+                        <button type="submit" class="pl-3 pr-2 text-slate-400 hover:text-crimson-700 transition-colors focus:outline-none" title="Cari Berita">
+                            <i class="ri-search-2-line text-lg"></i>
                         </button>
+                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari berita terkini, kata kunci, isu perkotaan..." class="w-full pr-3 py-2 bg-transparent text-xs text-slate-900 focus:outline-none font-medium">
                     </div>
                 </form>
 
@@ -174,17 +185,17 @@
     </header>
 
     <!-- TRENDING HASHTAG BAR (DETIK / TRIBUN STYLE) -->
-    <div class="bg-slate-900 text-slate-300 text-xs py-2 px-4 border-b border-slate-800 overflow-x-auto custom-scrollbar">
+    <div class="bg-slate-900 text-slate-300 text-xs py-2 px-4 border-b border-slate-800 overflow-x-auto overflow-y-hidden menu-scrollbar">
         <div class="max-w-7xl mx-auto flex items-center gap-4 shrink-0 font-medium">
             <span class="text-amber-400 font-bold uppercase text-[11px] tracking-wider flex items-center gap-1 font-heading shrink-0">
                 <i class="ri-fire-fill"></i> HOT TOPICS:
             </span>
-            <div class="flex items-center gap-2 overflow-x-auto font-heading shrink-0">
-                <a href="{{ route('articles.index', ['search' => 'UMKM']) }}" class="px-3 py-0.5 rounded-full bg-slate-800 hover:bg-brand-600 hover:text-white text-slate-300 transition-all text-[11px]">#KulinerMetro</a>
-                <a href="{{ route('articles.index', ['category' => 'olahraga']) }}" class="px-3 py-0.5 rounded-full bg-slate-800 hover:bg-brand-600 hover:text-white text-slate-300 transition-all text-[11px]">#PorkotMetro2026</a>
-                <a href="{{ route('articles.index', ['category' => 'hukum']) }}" class="px-3 py-0.5 rounded-full bg-slate-800 hover:bg-brand-600 hover:text-white text-slate-300 transition-all text-[11px]">#BantuanHukum</a>
-                <a href="{{ route('articles.index', ['district' => 'Metro Pusat']) }}" class="px-3 py-0.5 rounded-full bg-slate-800 hover:bg-brand-600 hover:text-white text-slate-300 transition-all text-[11px]">#MetroPusat</a>
-                <a href="{{ route('articles.index', ['category' => 'politik']) }}" class="px-3 py-0.5 rounded-full bg-slate-800 hover:bg-brand-600 hover:text-white text-slate-300 transition-all text-[11px]">#APBDMetro2026</a>
+            <div class="flex items-center gap-3 overflow-x-auto overflow-y-hidden font-heading shrink-0 menu-scrollbar">
+                <a href="{{ route('articles.index', ['search' => 'UMKM']) }}" class="hover:text-white text-slate-300 transition-all text-[11px]">#KulinerMetro</a>
+                <a href="{{ route('articles.index', ['category' => 'olahraga']) }}" class="hover:text-white text-slate-300 transition-all text-[11px]">#PorkotMetro2026</a>
+                <a href="{{ route('articles.index', ['category' => 'hukum']) }}" class="hover:text-white text-slate-300 transition-all text-[11px]">#BantuanHukum</a>
+                <a href="{{ route('articles.index', ['district' => 'Metro Pusat']) }}" class="hover:text-white text-slate-300 transition-all text-[11px]">#MetroPusat</a>
+                <a href="{{ route('articles.index', ['category' => 'politik']) }}" class="hover:text-white text-slate-300 transition-all text-[11px]">#APBDMetro2026</a>
             </div>
         </div>
     </div>
@@ -192,42 +203,42 @@
     <!-- STICKY NATIONAL EDITORIAL NAV BAR -->
     <nav class="sticky top-0 z-40 glass-nav shadow-xs">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-14 overflow-x-auto custom-scrollbar">
+            <div class="flex items-center justify-between h-11 overflow-x-auto overflow-y-hidden menu-scrollbar pb-1">
                 
-                <div class="flex items-center gap-2 text-xs font-bold font-heading py-2 shrink-0">
-                    <a href="{{ route('home') }}" class="px-4 py-2 rounded-xl transition-all flex items-center gap-1.5 {{ request()->routeIs('home') ? 'bg-crimson-700 text-white shadow-md font-extrabold' : 'text-slate-700 hover:bg-red-50 hover:text-crimson-700' }}">
-                        <i class="ri-fire-fill text-amber-300"></i> Beranda &amp; Headline
+                <div class="flex items-center gap-2 text-xs font-bold font-heading py-1 shrink-0">
+                    <a href="{{ route('home') }}" class="px-3.5 py-1.5 rounded-md transition-all flex items-center gap-1.5 {{ request()->routeIs('home') ? 'bg-crimson-700 text-white shadow-md font-extrabold' : 'text-slate-700 hover:bg-red-50 hover:text-crimson-700' }}">
+                        <i class="ri-fire-fill {{ request()->routeIs('home') ? 'text-amber-300' : '' }}"></i> Beranda &amp; Headline
                     </a>
-                    <a href="{{ route('articles.index') }}" class="px-4 py-2 rounded-xl transition-all flex items-center gap-1.5 {{ request()->routeIs('articles.index') || request()->routeIs('articles.show') ? 'bg-crimson-700 text-white shadow-md font-extrabold' : 'text-slate-700 hover:bg-red-50 hover:text-crimson-700' }}">
-                        <i class="ri-newspaper-line text-crimson-600"></i> Metro Terkini
+                    <a href="{{ route('articles.index') }}" class="px-3.5 py-1.5 rounded-md transition-all flex items-center gap-1.5 {{ request()->routeIs('articles.index') && !request()->has('category') || request()->routeIs('articles.show') ? 'bg-crimson-700 text-white shadow-md font-extrabold' : 'text-slate-700 hover:bg-red-50 hover:text-crimson-700' }}">
+                        <i class="ri-newspaper-line"></i> Metro Terkini
                     </a>
                     
-                    <span class="text-slate-300 font-normal">|</span>
+                    <span class="text-slate-900 font-normal">|</span>
                     
                     <!-- LDA TOPIC MODELING NAV LINK FEATURE -->
-                    <a href="{{ route('analysis.index') }}" class="px-4 py-2 rounded-xl transition-all flex items-center gap-1.5 {{ request()->routeIs('analysis.index') ? 'bg-teal-700 text-white shadow-md font-extrabold' : 'bg-teal-50 text-teal-800 border border-teal-200 hover:bg-teal-100 font-extrabold' }}">
-                        <i class="ri-pulse-line text-teal-600"></i> Analisis LDA Topic Modeling
+                    <a href="{{ route('analysis.index') }}" class="px-3.5 py-1.5 rounded-md transition-all flex items-center gap-1.5 {{ request()->routeIs('analysis.index') ? 'bg-crimson-700 text-white shadow-md font-extrabold' : 'text-slate-700 hover:bg-red-50 hover:text-crimson-700' }}">
+                        <i class="ri-pulse-line"></i> Analisis LDA Topic Modeling
                     </a>
-                    <a href="{{ route('analysis.preprocessing') }}" class="px-3.5 py-2 rounded-xl transition-all flex items-center gap-1.5 {{ request()->routeIs('analysis.preprocessing') ? 'bg-slate-900 text-white font-extrabold' : 'text-slate-700 hover:bg-slate-200' }}">
-                        <i class="ri-sound-module-line text-teal-600"></i> Preprocessing Teks
+                    <a href="{{ route('analysis.preprocessing') }}" class="px-3.5 py-1.5 rounded-md transition-all flex items-center gap-1.5 {{ request()->routeIs('analysis.preprocessing') ? 'bg-crimson-700 text-white shadow-md font-extrabold' : 'text-slate-700 hover:bg-red-50 hover:text-crimson-700' }}">
+                        <i class="ri-sound-module-line"></i> Preprocessing Teks
                     </a>
-                    <a href="{{ route('analysis.vectorization') }}" class="px-3.5 py-2 rounded-xl transition-all flex items-center gap-1.5 {{ request()->routeIs('analysis.vectorization') ? 'bg-slate-900 text-white font-extrabold' : 'text-slate-700 hover:bg-slate-200' }}">
-                        <i class="ri-matrix-line text-indigo-600"></i> Vektorisasi DTM
+                    <a href="{{ route('analysis.vectorization') }}" class="px-3.5 py-1.5 rounded-md transition-all flex items-center gap-1.5 {{ request()->routeIs('analysis.vectorization') ? 'bg-crimson-700 text-white shadow-md font-extrabold' : 'text-slate-700 hover:bg-red-50 hover:text-crimson-700' }}">
+                        <i class="ri-matrix-line"></i> Vektorisasi DTM
                     </a>
                     
-                    <span class="text-slate-300 font-normal">|</span>
+                    <span class="text-slate-900 font-normal">|</span>
 
-                    <a href="{{ route('articles.index', ['category' => 'ekonomi']) }}" class="px-3.5 py-2 rounded-xl text-slate-700 hover:text-crimson-700 hover:bg-red-50 transition-all flex items-center gap-1.5">
-                        <i class="ri-price-tag-3-line text-brand-600"></i> Ekonomi &amp; UMKM
+                    <a href="{{ route('articles.index', ['category' => 'ekonomi']) }}" class="px-3 py-1.5 rounded-md transition-all flex items-center gap-1.5 {{ request('category') == 'ekonomi' ? 'bg-crimson-700 text-white shadow-md font-extrabold' : 'text-slate-700 hover:bg-red-50 hover:text-crimson-700' }}">
+                        <i class="ri-price-tag-3-line"></i> Ekonomi &amp; UMKM
                     </a>
-                    <a href="{{ route('articles.index', ['category' => 'hukum']) }}" class="px-3.5 py-2 rounded-xl text-slate-700 hover:text-crimson-700 hover:bg-red-50 transition-all flex items-center gap-1.5">
-                        <i class="ri-scales-3-line text-brand-600"></i> Hukum &amp; Perda
+                    <a href="{{ route('articles.index', ['category' => 'hukum']) }}" class="px-3 py-1.5 rounded-md transition-all flex items-center gap-1.5 {{ request('category') == 'hukum' ? 'bg-crimson-700 text-white shadow-md font-extrabold' : 'text-slate-700 hover:bg-red-50 hover:text-crimson-700' }}">
+                        <i class="ri-scales-3-line"></i> Hukum &amp; Perda
                     </a>
-                    <a href="{{ route('articles.index', ['category' => 'politik']) }}" class="px-3.5 py-2 rounded-xl text-slate-700 hover:text-crimson-700 hover:bg-red-50 transition-all flex items-center gap-1.5">
-                        <i class="ri-government-line text-brand-600"></i> Politik &amp; APBD
+                    <a href="{{ route('articles.index', ['category' => 'politik']) }}" class="px-3 py-1.5 rounded-md transition-all flex items-center gap-1.5 {{ request('category') == 'politik' ? 'bg-crimson-700 text-white shadow-md font-extrabold' : 'text-slate-700 hover:bg-red-50 hover:text-crimson-700' }}">
+                        <i class="ri-government-line"></i> Politik &amp; APBD
                     </a>
-                    <a href="{{ route('articles.index', ['category' => 'olahraga']) }}" class="px-3.5 py-2 rounded-xl text-slate-700 hover:text-crimson-700 hover:bg-red-50 transition-all flex items-center gap-1.5">
-                        <i class="ri-trophy-line text-brand-600"></i> Olahraga &amp; Porkot
+                    <a href="{{ route('articles.index', ['category' => 'olahraga']) }}" class="px-3 py-1.5 rounded-md transition-all flex items-center gap-1.5 {{ request('category') == 'olahraga' ? 'bg-crimson-700 text-white shadow-md font-extrabold' : 'text-slate-700 hover:bg-red-50 hover:text-crimson-700' }}">
+                        <i class="ri-trophy-line"></i> Olahraga &amp; Porkot
                     </a>
                 </div>
 
@@ -302,7 +313,7 @@
             <div class="border-t border-slate-900 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
                 <p>&copy; {{ date('Y') }} METROLOGI NEWS Kota Metro. Hak Cipta Dilindungi.</p>
                 <div class="flex items-center gap-4">
-                    <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900 text-slate-300 border border-slate-800 font-bold">
+                    <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-md bg-slate-900 text-slate-300 border border-slate-800 font-bold">
                         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
                         Portal Berita Terverifikasi Dewan Pers &amp; Sentimen AI
                     </span>
