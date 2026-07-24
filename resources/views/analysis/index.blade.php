@@ -6,10 +6,10 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
     
     <!-- Title & Action Header -->
-    <div class="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-xs space-y-4">
+    <div class="bg-white border border-slate-200/90 rounded-md p-6 sm:p-8 shadow-xs space-y-4">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div class="space-y-1">
-                <span class="text-xs font-bold text-teal-700 bg-teal-50 px-3 py-1 rounded-full border border-teal-200 uppercase tracking-wider">
+                <span class="text-xs font-bold text-teal-700 bg-teal-50 px-3 py-1 rounded-md border border-teal-200 uppercase tracking-wider">
                     <i class="ri-pulse-line"></i> Task Scheduler & Machine Learning Engine
                 </span>
                 <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2">
@@ -22,14 +22,14 @@
 
             <form action="{{ route('analysis.run') }}" method="POST" class="self-start md:self-center">
                 @csrf
-                <button type="submit" class="px-5 py-3 rounded-2xl bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-extrabold text-xs shadow-md shadow-teal-600/20 transition-all flex items-center gap-2">
+                <button type="submit" class="px-5 py-3 rounded-md bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-extrabold text-xs shadow-md shadow-teal-600/20 transition-all flex items-center gap-2">
                     <i class="ri-play-circle-line text-base"></i> Pemicu Manual (Run Scheduler Sekarang)
                 </button>
             </form>
         </div>
 
         <!-- Task Scheduler Cron Status Live Banner -->
-        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs">
+        <div class="p-4 rounded-md bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs">
             <div class="flex items-center gap-3">
                 <div class="w-3 h-3 rounded-full bg-emerald-500 animate-ping"></div>
                 <div>
@@ -52,7 +52,7 @@
     </div>
 
     <!-- 6-STEP LDA PIPELINE WORKFLOW CARD -->
-    <div class="bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 p-6 sm:p-8 rounded-3xl border border-slate-800 text-white space-y-6 shadow-xl">
+    <div class="bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 p-6 sm:p-8 rounded-md border border-slate-800 text-white space-y-6 shadow-xl">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
             <div>
                 <span class="text-[10px] font-bold text-amber-400 uppercase tracking-widest block font-heading">PIPELINE ALUR KERJA AUTOMATION</span>
@@ -61,10 +61,10 @@
                 </h3>
             </div>
             <div class="flex items-center gap-2">
-                <a href="{{ route('analysis.preprocessing') }}" class="px-3.5 py-1.5 rounded-xl bg-teal-900/60 hover:bg-teal-800 border border-teal-500/30 text-teal-300 text-xs font-bold font-heading transition-all">
+                <a href="{{ route('analysis.preprocessing') }}" class="px-3.5 py-1.5 rounded-md bg-teal-900/60 hover:bg-teal-800 border border-teal-500/30 text-teal-300 text-xs font-bold font-heading transition-all">
                     Step 2: Preprocessing Teks &rarr;
                 </a>
-                <a href="{{ route('analysis.vectorization') }}" class="px-3.5 py-1.5 rounded-xl bg-indigo-900/60 hover:bg-indigo-800 border border-indigo-500/30 text-indigo-300 text-xs font-bold font-heading transition-all">
+                <a href="{{ route('analysis.vectorization') }}" class="px-3.5 py-1.5 rounded-md bg-indigo-900/60 hover:bg-indigo-800 border border-indigo-500/30 text-indigo-300 text-xs font-bold font-heading transition-all">
                     Step 3: Matriks DTM &rarr;
                 </a>
             </div>
@@ -72,42 +72,42 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3">
             <!-- Step 1 -->
-            <div class="p-3.5 bg-slate-800/80 border border-slate-700/80 rounded-2xl space-y-1.5">
+            <div class="p-3.5 bg-slate-800/80 border border-slate-700/80 rounded-md space-y-1.5">
                 <span class="w-6 h-6 rounded-lg bg-teal-500 text-slate-950 font-black text-xs flex items-center justify-center font-heading">1</span>
                 <h4 class="font-bold text-xs text-teal-300 font-heading">Pengumpulan Data</h4>
                 <p class="text-[10px] text-slate-400 leading-snug">Scraping / API komentar mentah (raw text) disimpan di MySQL database.</p>
             </div>
 
             <!-- Step 2 -->
-            <div class="p-3.5 bg-slate-800/80 border border-slate-700/80 rounded-2xl space-y-1.5">
+            <div class="p-3.5 bg-slate-800/80 border border-slate-700/80 rounded-md space-y-1.5">
                 <span class="w-6 h-6 rounded-lg bg-teal-500 text-slate-950 font-black text-xs flex items-center justify-center font-heading">2</span>
                 <h4 class="font-bold text-xs text-teal-300 font-heading">Pra-pemrosesan Teks</h4>
                 <p class="text-[10px] text-slate-400 leading-snug">Case folding, Tokenization, Stopword removal, &amp; Stemming Indonesia.</p>
             </div>
 
             <!-- Step 3 -->
-            <div class="p-3.5 bg-slate-800/80 border border-slate-700/80 rounded-2xl space-y-1.5">
+            <div class="p-3.5 bg-slate-800/80 border border-slate-700/80 rounded-md space-y-1.5">
                 <span class="w-6 h-6 rounded-lg bg-indigo-500 text-slate-950 font-black text-xs flex items-center justify-center font-heading">3</span>
                 <h4 class="font-bold text-xs text-indigo-300 font-heading">Representasi Dokumen</h4>
                 <p class="text-[10px] text-slate-400 leading-snug">Pembentukan Vocabulary Index &amp; Document-Term Matrix (BoW / TF-IDF).</p>
             </div>
 
             <!-- Step 4 -->
-            <div class="p-3.5 bg-slate-800/80 border border-slate-700/80 rounded-2xl space-y-1.5">
+            <div class="p-3.5 bg-slate-800/80 border border-slate-700/80 rounded-md space-y-1.5">
                 <span class="w-6 h-6 rounded-lg bg-amber-500 text-slate-950 font-black text-xs flex items-center justify-center font-heading">4</span>
                 <h4 class="font-bold text-xs text-amber-300 font-heading">Pemodelan LDA</h4>
                 <p class="text-[10px] text-slate-400 leading-snug">Estimasi Gibbs Sampling sebaran Dirichlet topik &amp; bobot kata ($k=4$).</p>
             </div>
 
             <!-- Step 5 -->
-            <div class="p-3.5 bg-slate-800/80 border border-slate-700/80 rounded-2xl space-y-1.5">
+            <div class="p-3.5 bg-slate-800/80 border border-slate-700/80 rounded-md space-y-1.5">
                 <span class="w-6 h-6 rounded-lg bg-rose-500 text-slate-950 font-black text-xs flex items-center justify-center font-heading">5</span>
                 <h4 class="font-bold text-xs text-rose-300 font-heading">Evaluasi &amp; Labeling</h4>
                 <p class="text-[10px] text-slate-400 leading-snug">Hitung Coherence Score ($C_v$) &amp; pemberian label kategori isu publik.</p>
             </div>
 
             <!-- Step 6 -->
-            <div class="p-3.5 bg-slate-800/80 border border-slate-700/80 rounded-2xl space-y-1.5">
+            <div class="p-3.5 bg-slate-800/80 border border-slate-700/80 rounded-md space-y-1.5">
                 <span class="w-6 h-6 rounded-lg bg-emerald-500 text-slate-950 font-black text-xs flex items-center justify-center font-heading">6</span>
                 <h4 class="font-bold text-xs text-emerald-300 font-heading">Visualisasi Dashboard</h4>
                 <p class="text-[10px] text-slate-400 leading-snug">Penyimpanan MySQL &amp; antarmuka grafik visual tren isu bagi pengambil keputusan.</p>
@@ -117,25 +117,25 @@
 
     <!-- Top Metrics Row -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        <div class="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-xs space-y-2">
+        <div class="bg-white border border-slate-200/90 rounded-md p-5 shadow-xs space-y-2">
             <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Total Komentar Dicrawl</span>
             <p class="text-3xl font-black text-slate-900">{{ number_format($totalComments) }}</p>
             <p class="text-[11px] text-slate-500">Dari akun publik & berita</p>
         </div>
 
-        <div class="bg-white border border-teal-200 rounded-2xl p-5 shadow-xs space-y-2">
+        <div class="bg-white border border-teal-200 rounded-md p-5 shadow-xs space-y-2">
             <span class="text-xs font-bold uppercase tracking-wider text-teal-700">Topik LDA Terbentuk</span>
             <p class="text-3xl font-black text-teal-700">{{ $topics->count() }} Topik</p>
             <p class="text-[11px] text-teal-800 font-semibold">Probabilitas kata & klaster</p>
         </div>
 
-        <div class="bg-white border border-indigo-200 rounded-2xl p-5 shadow-xs space-y-2">
+        <div class="bg-white border border-indigo-200 rounded-md p-5 shadow-xs space-y-2">
             <span class="text-xs font-bold uppercase tracking-wider text-indigo-700">Rata-rata Coherence Score</span>
             <p class="text-3xl font-black text-indigo-700">0.865</p>
             <p class="text-[11px] text-indigo-800 font-semibold">Tingkat akurasi pemodelan</p>
         </div>
 
-        <div class="bg-white border border-amber-200 rounded-2xl p-5 shadow-xs space-y-2">
+        <div class="bg-white border border-amber-200 rounded-md p-5 shadow-xs space-y-2">
             <span class="text-xs font-bold uppercase tracking-wider text-amber-700">Platform Data Scraper</span>
             <p class="text-3xl font-black text-amber-700">{{ $platforms->count() }} Sumber</p>
             <p class="text-[11px] text-amber-800 font-semibold">Instagram, X, Berita Online</p>
@@ -146,7 +146,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
         
         <!-- Topic Distribution Doughnut Chart -->
-        <div class="lg:col-span-6 bg-white border border-slate-200/90 rounded-3xl p-6 shadow-xs space-y-4">
+        <div class="lg:col-span-6 bg-white border border-slate-200/90 rounded-md p-6 shadow-xs space-y-4">
             <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
                 <i class="ri-pie-chart-2-line text-teal-600"></i> Distribusi Probabilitas Topik Isu (LDA)
             </h3>
@@ -156,7 +156,7 @@
         </div>
 
         <!-- Dominant Keywords Frequency Chart -->
-        <div class="lg:col-span-6 bg-white border border-slate-200/90 rounded-3xl p-6 shadow-xs space-y-4">
+        <div class="lg:col-span-6 bg-white border border-slate-200/90 rounded-md p-6 shadow-xs space-y-4">
             <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
                 <i class="ri-bar-chart-horizontal-line text-emerald-600"></i> Frekuensi Kata Kunci Dominan
             </h3>

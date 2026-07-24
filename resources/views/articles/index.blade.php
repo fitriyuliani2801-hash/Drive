@@ -6,9 +6,9 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
     
     <!-- Page Header Banner (National Media Style) -->
-    <div class="bg-gradient-to-r from-slate-900 via-brand-950 to-slate-900 p-8 sm:p-10 rounded-3xl border border-slate-800 text-white relative overflow-hidden space-y-3 shadow-md">
+    <div class="bg-gradient-to-r from-slate-900 via-brand-950 to-slate-900 p-8 sm:p-10 rounded-md border border-slate-800 text-white relative overflow-hidden space-y-3 shadow-md">
         <div class="relative z-10">
-            <span class="px-3.5 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-crimson-700 text-white border border-red-500/30 font-heading">
+            <span class="px-3.5 py-1 rounded-md text-xs font-black uppercase tracking-wider bg-crimson-700 text-white border border-red-500/30 font-heading">
                 METRO TERKINI &amp; ARSIP BERITA
             </span>
             <h1 class="text-3xl sm:text-5xl font-black text-white mt-3 font-heading">
@@ -19,14 +19,14 @@
     </div>
 
     <!-- Search & Filters Bar -->
-    <form action="{{ route('articles.index') }}" method="GET" class="bg-white p-5 rounded-3xl border border-slate-200 space-y-4 md:space-y-0 md:flex items-center gap-4 shadow-xs">
+    <form action="{{ route('articles.index') }}" method="GET" class="bg-white p-5 rounded-md border border-slate-200 space-y-4 md:space-y-0 md:flex items-center gap-4 shadow-xs">
         <div class="flex-1 relative">
             <i class="ri-search-2-line absolute left-4 top-3.5 text-slate-400"></i>
-            <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari judul berita, kata kunci isu perkotaan..." class="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm text-slate-900 focus:outline-none focus:border-crimson-600 focus:bg-white font-medium">
+            <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari judul berita, kata kunci isu perkotaan..." class="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-md text-sm text-slate-900 focus:outline-none focus:border-crimson-600 focus:bg-white font-medium">
         </div>
 
         <div class="w-full md:w-56">
-            <select name="category" onchange="this.form.submit()" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-bold text-slate-700 focus:outline-none focus:border-crimson-600 font-heading">
+            <select name="category" onchange="this.form.submit()" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-md text-xs font-bold text-slate-700 focus:outline-none focus:border-crimson-600 font-heading">
                 <option value="">Semua Kategori</option>
                 @foreach($categories as $cat)
                     <option value="{{ $cat->slug }}" {{ request('category') == $cat->slug ? 'selected' : '' }}>{{ $cat->name }}</option>
@@ -35,7 +35,7 @@
         </div>
 
         <div class="w-full md:w-56">
-            <select name="district" onchange="this.form.submit()" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-bold text-slate-700 focus:outline-none focus:border-crimson-600 font-heading">
+            <select name="district" onchange="this.form.submit()" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-md text-xs font-bold text-slate-700 focus:outline-none focus:border-crimson-600 font-heading">
                 <option value="">Seluruh Kecamatan</option>
                 @foreach($districts as $dist)
                     <option value="{{ $dist }}" {{ request('district') == $dist ? 'selected' : '' }}>{{ $dist }}</option>
@@ -43,7 +43,7 @@
             </select>
         </div>
 
-        <a href="{{ route('articles.index') }}" class="px-5 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold flex items-center justify-center gap-2 transition-all font-heading border border-slate-200">
+        <a href="{{ route('articles.index') }}" class="px-5 py-3 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold flex items-center justify-center gap-2 transition-all font-heading border border-slate-200">
             <i class="ri-refresh-line"></i> Reset Filter
         </a>
     </form>
@@ -55,18 +55,18 @@
         </h2>
 
         @if($articles->isEmpty())
-            <div class="bg-white rounded-3xl p-12 text-center max-w-md mx-auto my-8 border border-slate-200 shadow-xs">
-                <div class="w-16 h-16 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-4 text-3xl">
+            <div class="bg-white rounded-md p-12 text-center max-w-md mx-auto my-8 border border-slate-200 shadow-xs">
+                <div class="w-16 h-16 rounded-md bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-4 text-3xl">
                     <i class="ri-newspaper-line"></i>
                 </div>
                 <h3 class="text-lg font-bold text-slate-900 mb-1 font-heading">Belum Ada Artikel Berita</h3>
                 <p class="text-xs text-slate-500 mb-5">Tidak ada berita yang sesuai dengan filter pencarian Anda.</p>
-                <a href="{{ route('articles.index') }}" class="px-5 py-2.5 rounded-xl bg-crimson-700 text-white font-bold text-xs font-heading">Lihat Semua Berita</a>
+                <a href="{{ route('articles.index') }}" class="px-5 py-2.5 rounded-md bg-crimson-700 text-white font-bold text-xs font-heading">Lihat Semua Berita</a>
             </div>
         @else
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach($articles as $article)
-                    <div class="bg-white rounded-3xl overflow-hidden border border-slate-200 hover:border-crimson-600 transition-all flex flex-col justify-between shadow-xs hover:shadow-md group">
+                    <div class="bg-white rounded-md overflow-hidden border border-slate-200 hover:border-crimson-600 transition-all flex flex-col justify-between shadow-xs hover:shadow-md group">
                         <div>
                             @if($article->image_path)
                                 <div class="h-48 w-full bg-slate-100 overflow-hidden relative">
@@ -76,7 +76,7 @@
 
                             <div class="p-6 space-y-3">
                                 <div class="flex items-center justify-between text-xs">
-                                    <span class="px-3 py-1 rounded-full font-black text-white text-[10px] uppercase font-heading bg-crimson-700">
+                                    <span class="px-3 py-1 rounded-md font-black text-white text-[10px] uppercase font-heading bg-crimson-700">
                                         {{ $article->category->name }}
                                     </span>
                                     <span class="text-brand-700 text-[11px] font-bold"><i class="ri-eye-line"></i> {{ number_format($article->views_count) }} dibaca</span>
