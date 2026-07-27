@@ -164,10 +164,8 @@
                 
                 <!-- Logo & Subtitle -->
                 <a href="{{ route('home') }}" class="flex items-center gap-3.5 group">
-                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-crimson-700 via-brand-600 to-blue-600 p-0.5 group-hover:scale-105 transition-transform duration-300">
-                        <div class="w-full h-full bg-white rounded-[14px] flex items-center justify-center">
-                            <i class="ri-newspaper-fill text-3xl text-crimson-700"></i>
-                        </div>
+                    <div class="w-14 h-14 shrink-0 group-hover:scale-105 transition-transform duration-300">
+                        <img src="{{ asset('images/Logo-Kota-Metro.png') }}" alt="Logo Kota Metro" class="w-full h-full object-contain scale-[1.6]">
                     </div>
                     <div>
                         <span class="text-3xl sm:text-4xl font-black tracking-tight text-slate-900 flex items-center gap-2.5 font-heading">
@@ -286,10 +284,8 @@
             <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
                 <div class="md:col-span-2 space-y-4">
                     <div class="flex items-center gap-3">
-                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-crimson-700 via-brand-600 to-sky-500 p-0.5 shadow-md">
-                            <div class="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center">
-                                <i class="ri-newspaper-fill text-2xl text-crimson-600"></i>
-                            </div>
+                        <div class="w-12 h-12 shrink-0">
+                            <img src="{{ asset('images/Logo-Kota-Metro.png') }}" alt="Logo Kota Metro" class="w-full h-full object-contain scale-[1.6]">
                         </div>
                         <span class="text-3xl font-black tracking-tight text-white font-heading">METROLOGI<span class="text-crimson-600">NEWS</span></span>
                     </div>
