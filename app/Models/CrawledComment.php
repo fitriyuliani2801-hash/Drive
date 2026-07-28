@@ -13,6 +13,7 @@ class CrawledComment extends Model
         'article_id',
         'platform',
         'source_account',
+        'post_url',
         'author_name',
         'raw_text',
         'cleaned_text',

@@ -1,18 +1,18 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
-@section('title', 'Dashboard Analisis Pemodelan Topik LDA & Automation - Metrologi')
+@section('title', 'Dashboard Analisis Pemodelan Topik LDA & Automation - Admin Redaksi')
 
 @section('content')
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
+<div class="max-w-7xl mx-auto space-y-10">
     
     <!-- Title & Action Header -->
     <div class="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-xs space-y-4">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div class="space-y-1">
                 <span class="text-xs font-bold text-teal-700 bg-teal-50 px-3 py-1 rounded-full border border-teal-200 uppercase tracking-wider">
-                    <i class="ri-pulse-line"></i> Task Scheduler & Machine Learning Engine
+                    <i class="ri-pulse-line"></i> Internal Task Scheduler &amp; Machine Learning Engine (Admin)
                 </span>
-                <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2">
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2 font-heading">
                     Dashboard Analisis Pemodelan Topik (Algoritma LDA)
                 </h1>
                 <p class="text-xs sm:text-sm text-slate-600 max-w-3xl leading-relaxed">
@@ -20,9 +20,9 @@
                 </p>
             </div>
 
-            <form action="{{ route('analysis.run') }}" method="POST" class="self-start md:self-center">
+            <form action="{{ route('admin.analysis.run') }}" method="POST" class="self-start md:self-center">
                 @csrf
-                <button type="submit" class="px-5 py-3 rounded-2xl bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-extrabold text-xs shadow-md shadow-teal-600/20 transition-all flex items-center gap-2">
+                <button type="submit" class="px-5 py-3 rounded-2xl bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-extrabold text-xs shadow-md shadow-teal-600/20 transition-all flex items-center gap-2 font-heading">
                     <i class="ri-play-circle-line text-base"></i> Pemicu Manual (Run Scheduler Sekarang)
                 </button>
             </form>
@@ -61,10 +61,10 @@
                 </h3>
             </div>
             <div class="flex items-center gap-2">
-                <a href="{{ route('analysis.preprocessing') }}" class="px-3.5 py-1.5 rounded-xl bg-teal-900/60 hover:bg-teal-800 border border-teal-500/30 text-teal-300 text-xs font-bold font-heading transition-all">
+                <a href="{{ route('admin.analysis.preprocessing') }}" class="px-3.5 py-1.5 rounded-xl bg-teal-900/60 hover:bg-teal-800 border border-teal-500/30 text-teal-300 text-xs font-bold font-heading transition-all">
                     Step 2: Preprocessing Teks &rarr;
                 </a>
-                <a href="{{ route('analysis.vectorization') }}" class="px-3.5 py-1.5 rounded-xl bg-indigo-900/60 hover:bg-indigo-800 border border-indigo-500/30 text-indigo-300 text-xs font-bold font-heading transition-all">
+                <a href="{{ route('admin.analysis.vectorization') }}" class="px-3.5 py-1.5 rounded-xl bg-indigo-900/60 hover:bg-indigo-800 border border-indigo-500/30 text-indigo-300 text-xs font-bold font-heading transition-all">
                     Step 3: Matriks DTM &rarr;
                 </a>
             </div>
@@ -176,7 +176,7 @@
                 </h3>
                 <p class="text-xs text-slate-500 mt-1">Ukuran kata mencerminkan pembobotan frekuensi kata dalam analisis pemodelan topik LDA.</p>
             </div>
-            <a href="{{ route('analysis.preprocessing') }}" class="text-xs font-bold text-teal-700 hover:underline flex items-center gap-1">
+            <a href="{{ route('admin.analysis.preprocessing') }}" class="text-xs font-bold text-teal-700 hover:underline flex items-center gap-1">
                 Inspeksi Pre-Processing Teks &rarr;
             </a>
         </div>
@@ -206,7 +206,12 @@
 
     <!-- LDA Topics Keyword Matrix Cards Grid -->
     <div class="space-y-4">
-        <h3 class="text-lg font-bold text-slate-900">Rincian Klaster Topik & Kata Kunci Hasil LDA</h3>
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-3">
+            <h3 class="text-lg font-bold text-slate-900">Rincian Klaster Topik &amp; Kata Kunci Resmi</h3>
+            <span class="px-3.5 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold font-heading flex items-center gap-1.5 self-start sm:self-auto shadow-2xs">
+                <i class="ri-shield-check-fill text-emerald-600"></i> Terverifikasi &amp; Diterbitkan oleh Admin Redaksi
+            </span>
+        </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             @foreach($topics as $topic)

@@ -108,32 +108,6 @@
     @endif
 </div>
 
-<!-- FEATURED WIDGET: 6-STEP LDA TOPIC MODELING PUBLIC ISU ANALYSIS BANNER -->
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
-    <div class="bg-gradient-to-r from-slate-900 via-slate-950 to-teal-950 p-6 sm:p-8 rounded-3xl border border-slate-800 text-white shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div class="space-y-2 max-w-3xl">
-            <span class="px-3 py-1 rounded-full bg-teal-500/20 text-teal-300 border border-teal-500/30 text-xs font-bold font-heading uppercase tracking-wider">
-                <i class="ri-pulse-line text-teal-400"></i> Sistem Machine Learning NLP (6-Step LDA Pipeline)
-            </span>
-            <h3 class="text-xl sm:text-2xl font-black text-white font-heading leading-tight">
-                Analisis Isu Publik &amp; Pemodelan Topik Berbasis Latent Dirichlet Allocation (LDA)
-            </h3>
-            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
-                Sistem otomatis mengagregasi komentar publik dari Instagram, X, dan Berita Online, memproses 4 tahap pre-processing NLP (Case Folding, Tokenization, Stopword, Stemming), memetakan matriks DTM (TF-IDF), serta menghitung probabilitas 4 klaster topik utama Kota Metro.
-            </p>
-        </div>
-
-        <div class="flex flex-wrap items-center gap-3 shrink-0">
-            <a href="{{ route('analysis.index') }}" class="px-5 py-3 rounded-2xl bg-teal-600 hover:bg-teal-700 text-white font-extrabold text-xs shadow-lg shadow-teal-600/30 transition-all font-heading flex items-center gap-2">
-                <i class="ri-pie-chart-2-line text-lg"></i> Buka Dashboard LDA &rarr;
-            </a>
-            <a href="{{ route('analysis.vectorization') }}" class="px-4 py-3 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs border border-slate-700 transition-all font-heading flex items-center gap-1.5">
-                <i class="ri-matrix-line text-indigo-400"></i> Inspeksi Matriks DTM
-            </a>
-        </div>
-    </div>
-</div>
-
 <!-- MAIN CONTENT 2-COLUMN SECTION (7 COLS MAIN STREAM + 5 COLS SIDEBAR WIDGETS) -->
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
