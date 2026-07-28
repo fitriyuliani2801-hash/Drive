@@ -205,59 +205,7 @@
         </div>
     </div>
 
-    <!-- STICKY NATIONAL EDITORIAL NAV BAR -->
-    <nav class="sticky top-0 z-40 glass-nav shadow-xs">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-11 overflow-x-auto overflow-y-hidden menu-scrollbar pb-1">
-                
-                <div class="flex items-center gap-2 text-xs font-bold font-heading py-1 shrink-0">
-                    <a href="{{ route('home') }}" class="px-3.5 py-1.5 rounded-sm transition-all flex items-center gap-1.5 {{ request()->routeIs('home') ? 'bg-crimson-700 text-white shadow-md font-extrabold' : 'text-slate-700 hover:bg-red-50 hover:text-crimson-700' }}">
-                        <i class="ri-fire-fill {{ request()->routeIs('home') ? 'text-amber-300' : '' }}"></i> Beranda &amp; Headline
-                    </a>
-                    <a href="{{ route('articles.index') }}" class="px-3.5 py-1.5 rounded-sm transition-all flex items-center gap-1.5 {{ request()->routeIs('articles.index') && !request()->has('category') || request()->routeIs('articles.show') ? 'bg-crimson-700 text-white shadow-md font-extrabold' : 'text-slate-700 hover:bg-red-50 hover:text-crimson-700' }}">
-                        Metro Terkini
-                    </a>
-                    
-                    <span class="text-slate-900 font-normal">|</span>
-                    
-                    <!-- LDA TOPIC MODELING NAV LINK FEATURE -->
-                    <a href="{{ route('analysis.index') }}" class="px-3.5 py-1.5 rounded-sm transition-all flex items-center gap-1.5 {{ request()->routeIs('analysis.index') ? 'bg-crimson-700 text-white shadow-md font-extrabold' : 'text-slate-700 hover:bg-red-50 hover:text-crimson-700' }}">
-                        Analisis LDA Topic Modeling
-                    </a>
-                    <a href="{{ route('analysis.preprocessing') }}" class="px-3.5 py-1.5 rounded-sm transition-all flex items-center gap-1.5 {{ request()->routeIs('analysis.preprocessing') ? 'bg-crimson-700 text-white shadow-md font-extrabold' : 'text-slate-700 hover:bg-red-50 hover:text-crimson-700' }}">
-                        Preprocessing Teks
-                    </a>
-                    <a href="{{ route('analysis.vectorization') }}" class="px-3.5 py-1.5 rounded-sm transition-all flex items-center gap-1.5 {{ request()->routeIs('analysis.vectorization') ? 'bg-crimson-700 text-white shadow-md font-extrabold' : 'text-slate-700 hover:bg-red-50 hover:text-crimson-700' }}">
-                        Vektorisasi DTM
-                    </a>
-                    
-                    <span class="text-slate-900 font-normal">|</span>
 
-                    <a href="{{ route('articles.index', ['category' => 'ekonomi']) }}" class="px-3 py-1.5 rounded-sm transition-all flex items-center gap-1.5 {{ request('category') == 'ekonomi' ? 'bg-crimson-700 text-white shadow-md font-extrabold' : 'text-slate-700 hover:bg-red-50 hover:text-crimson-700' }}">
-                        Ekonomi &amp; UMKM
-                    </a>
-                    <a href="{{ route('articles.index', ['category' => 'hukum']) }}" class="px-3 py-1.5 rounded-sm transition-all flex items-center gap-1.5 {{ request('category') == 'hukum' ? 'bg-crimson-700 text-white shadow-md font-extrabold' : 'text-slate-700 hover:bg-red-50 hover:text-crimson-700' }}">
-                        Hukum &amp; Perda
-                    </a>
-                    <a href="{{ route('articles.index', ['category' => 'politik']) }}" class="px-3 py-1.5 rounded-sm transition-all flex items-center gap-1.5 {{ request('category') == 'politik' ? 'bg-crimson-700 text-white shadow-md font-extrabold' : 'text-slate-700 hover:bg-red-50 hover:text-crimson-700' }}">
-                        Politik &amp; APBD
-                    </a>
-                    <a href="{{ route('articles.index', ['category' => 'olahraga']) }}" class="px-3 py-1.5 rounded-sm transition-all flex items-center gap-1.5 {{ request('category') == 'olahraga' ? 'bg-crimson-700 text-white shadow-md font-extrabold' : 'text-slate-700 hover:bg-red-50 hover:text-crimson-700' }}">
-                        Olahraga &amp; Porkot
-                    </a>
-                </div>
-
-                @auth
-                    <div class="flex items-center gap-2 shrink-0 pl-4 border-l border-slate-200">
-                        <a href="{{ route('admin.dashboard') }}" class="px-3.5 py-1.5 rounded-md bg-slate-900 text-white hover:bg-crimson-700 font-extrabold text-xs transition-colors flex items-center gap-1.5 shadow-xs">
-                            <i class="ri-dashboard-line"></i> Dashboard Redaksi
-                        </a>
-                    </div>
-                @endauth
-
-            </div>
-        </div>
-    </nav>
 
 
     <!-- Flash Notifications -->

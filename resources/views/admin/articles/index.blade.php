@@ -27,12 +27,18 @@
             </h3>
             <p class="text-[11px] text-slate-500">Masukkan link rujukan Instagram, TikTok, atau Facebook untuk meng-import berita beserta data komentar rujukan secara otomatis.</p>
         </div>
-        <form action="{{ route('admin.articles.import-link') }}" method="POST" class="flex flex-col sm:flex-row gap-3">
+        <form action="{{ route('admin.articles.import-link') }}" method="POST" class="space-y-3">
             @csrf
-            <input type="url" name="url" required placeholder="Contoh: https://www.instagram.com/p/..." class="flex-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-crimson-600 focus:bg-white font-medium">
-            <button type="submit" class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-crimson-700 text-white font-extrabold text-xs transition-colors font-heading flex items-center justify-center gap-1.5 shadow-xs">
-                <i class="ri-download-cloud-line"></i> Import &amp; Terbitkan
-            </button>
+            <div class="flex flex-col sm:flex-row gap-3">
+                <input type="url" name="url" required placeholder="Contoh: https://www.instagram.com/p/... atau Link Facebook / TikTok" class="flex-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-crimson-600 focus:bg-white font-medium">
+                <button type="submit" class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-crimson-700 text-white font-extrabold text-xs transition-colors font-heading flex items-center justify-center gap-1.5 shadow-xs shrink-0">
+                    <i class="ri-download-cloud-line"></i> Import &amp; Terbitkan
+                </button>
+            </div>
+            <div>
+                <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1 font-heading">Salin &amp; Tempel Teks Komentar Medsos Rujukan (Opsional - Satu Komentar per Baris)</label>
+                <textarea name="comments_text" rows="3" placeholder="Tempelkan (copy-paste) komentar asli dari postingan media sosial di sini (satu baris per komentar) jika Anda ingin meng-import komentar aslinya..." class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-crimson-600 focus:bg-white transition-colors leading-relaxed font-normal"></textarea>
+            </div>
         </form>
     </div>
 

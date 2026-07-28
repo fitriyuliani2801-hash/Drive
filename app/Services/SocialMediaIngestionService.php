@@ -99,9 +99,8 @@ class SocialMediaIngestionService
                             continue;
                         }
 
-                        // FASE 2c: Filter Relevansi Wilayah / Isu Kota Metro
-                        $isRelevan = $this->isRelevanToMetro($raw['raw_comment'], $article->title);
-                        $status = $isRelevan ? 'approved' : 'pending';
+                        // FASE 2c: Filter Relevansi Wilayah / Isu Kota Metro (Default to approved to automatically show on website)
+                        $status = 'approved';
 
                         // AI Sentiment Analysis
                         $sent = $this->sentimentEngine->analyzeSentiment($raw['raw_comment']);

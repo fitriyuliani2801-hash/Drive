@@ -81,6 +81,13 @@ class ArticleController extends Controller
         $article = Article::with(['category', 'author'])->where('slug', $slug)->firstOrFail();
         $article->increment('views_count');
 
+        // Otomatis scraping komentar dari sosial media rujukan saat berita dibaca (Fase 1 & 2)
+        try {
+            app(\App\Services\SocialMediaIngestionService::class)->runIngestion([], $article->id);
+        } catch (\Exception $e) {
+            // Silently catch in case of errors
+        }
+
         // Fase 3 Query: news_id = Current_News_ID AND status = 'approved' ORDER BY posted_at DESC LIMIT 10 (via paginate)
         $commentsQuery = SocialComment::where('article_id', $article->id)
             ->approved()

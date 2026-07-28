@@ -222,9 +222,11 @@ class AdminArticleController extends Controller
     {
         $validated = $request->validate([
             'url' => 'required|url',
+            'comments_text' => 'nullable|string',
         ]);
 
         $url = $validated['url'];
+        $customComments = $validated['comments_text'] ?? null;
 
         // Check if there is already an article with this source_url
         $existing = Article::where('source_url', $url)->first();
@@ -232,7 +234,7 @@ class AdminArticleController extends Controller
             return redirect()->route('admin.articles.index')->with('info', 'Artikel dari link tersebut sudah pernah di-import.');
         }
 
-        $parsedData = $parser->parseUrl($url);
+        $parsedData = $parser->parseUrl($url, null, $customComments);
 
         // Fetch a default category (e.g. Politik or the first category)
         $category = Category::first();

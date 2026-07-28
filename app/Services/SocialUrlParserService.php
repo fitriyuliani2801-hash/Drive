@@ -128,12 +128,33 @@ class SocialUrlParserService
             // Intelligent fallback comments derived from the title content
             $titleLower = strtolower($finalTitle . ' ' . $finalContent);
 
-            if (str_contains($titleLower, 'hoax') || str_contains($titleLower, 'palsu') || str_contains($titleLower, 'bohong')) {
+            if (str_contains($titleLower, 'hoax') || str_contains($titleLower, 'palsu') || str_contains($titleLower, 'bohong') || str_contains($titleLower, 'disinformasi') || str_contains($titleLower, 'klarifikasi')) {
                 $rawComments = [
-                    ['author' => '@warga_metro_1', 'comment' => 'Bohong banget ini! Kemarin saya cek ke lokasi tidak ada pembagian apa-apa, hoax penipuan meresahkan!'],
-                    ['author' => '@siti_netizen', 'comment' => 'Untung ada verifikasi berita begini, kasihan warga yang polos bisa tertipu.'],
-                    ['author' => '@budi_kritik', 'comment' => 'Tolong pihak kepolisian usut akun pembuat hoaks ini sangat merugikan publik.'],
-                    ['author' => '@dhea_metro', 'comment' => 'Terima kasih admin sudah verifikasi fakta, hampir aja saya sebar di grup WA keluarga.'],
+                    ['author' => '@warga_metro_1', 'comment' => 'Bohong banget ini! Kemarin saya cek ke lokasi tidak ada kejadian/pembagian apa-apa, hoax penipuan meresahkan!'],
+                    ['author' => '@siti_netizen', 'comment' => 'Untung ada verifikasi berita begini, kasihan warga yang polos bisa gampang tertipu.'],
+                    ['author' => '@budi_kritik', 'comment' => 'Tolong pihak kepolisian usut tuntas akun pembuat hoaks ini, sangat merugikan publik.'],
+                    ['author' => '@dhea_metro', 'comment' => 'Terima kasih admin sudah verifikasi fakta, hampir aja saya sebar informasi ini ke grup keluarga.'],
+                ];
+            } elseif (str_contains($titleLower, 'tangkap') || str_contains($titleLower, 'polisi') || str_contains($titleLower, 'tembak') || str_contains($titleLower, 'penembakan') || str_contains($titleLower, 'bunuh') || str_contains($titleLower, 'pembunuhan') || str_contains($titleLower, 'maling') || str_contains($titleLower, 'curi') || str_contains($titleLower, 'kriminal') || str_contains($titleLower, 'begal') || str_contains($titleLower, 'narkoba') || str_contains($titleLower, 'tersangka') || str_contains($titleLower, 'drakel') || str_contains($titleLower, 'pelaku')) {
+                $rawComments = [
+                    ['author' => '@warga_metro_1', 'comment' => 'Alhamdulillah akhirnya pelaku berhasil ditangkap! Sangat meresahkan sekali tindakan seperti ini.'],
+                    ['author' => '@indah_persada', 'comment' => 'Terima kasih jajaran Polres Metro atas respon cepatnya mengamankan pelaku kejahatan ini.'],
+                    ['author' => '@kritikus_muda', 'comment' => 'Hukum seberat-beratnya agar ada efek jera bagi pelaku kejahatan di kota kita.'],
+                    ['author' => '@bayu_waspada', 'comment' => 'Ngeri sekali kejadian ini, semoga Kota Metro selalu aman dan kondusif untuk warga.'],
+                ];
+            } elseif (str_contains($titleLower, 'meninggal') || str_contains($titleLower, 'wafat') || str_contains($titleLower, 'tewas') || str_contains($titleLower, 'jenazah') || str_contains($titleLower, 'makam') || str_contains($titleLower, 'berduka') || str_contains($titleLower, 'korban')) {
+                $rawComments = [
+                    ['author' => '@warga_metro_1', 'comment' => "Innalillahi wa inna ilaihi raji'un. Turut berduka cita yang mendalam atas kejadian ini."],
+                    ['author' => '@indah_persada', 'comment' => 'Semoga almarhum husnul khatimah dan keluarga yang ditinggalkan diberikan kekuatan serta ketabahan.'],
+                    ['author' => '@kritikus_muda', 'comment' => 'Sangat sedih mendengar kabar duka ini. Semoga amal ibadah beliau diterima di sisi Allah SWT.'],
+                    ['author' => '@bayu_tribute', 'comment' => 'Semoga dilapangkan kuburnya dan ditempatkan di tempat terbaik di sisi-Nya.'],
+                ];
+            } elseif (str_contains($titleLower, 'jalan') || str_contains($titleLower, 'rusak') || str_contains($titleLower, 'aspal') || str_contains($titleLower, 'lobang') || str_contains($titleLower, 'lubang') || str_contains($titleLower, 'jembatan') || str_contains($titleLower, 'pembangunan') || str_contains($titleLower, 'infrastruktur')) {
+                $rawComments = [
+                    ['author' => '@warga_metro_1', 'comment' => 'Alhamdulillah akhirnya diperbaiki juga, kemarin jalannya rusak parah bikin bahaya pengendara.'],
+                    ['author' => '@indah_persada', 'comment' => 'Terima kasih Dinas Pekerjaan Umum atas gerak cepatnya memperbaiki jalan protokol Kota Metro.'],
+                    ['author' => '@kritikus_muda', 'comment' => 'Semoga perbaikannya berkualitas bagus dan tahan lama, tidak cepat rusak lagi saat musim hujan.'],
+                    ['author' => '@bayu_usul', 'comment' => 'Masih banyak titik jalan berlubang lain di Metro, semoga segera ditindaklanjuti juga ya pak.'],
                 ];
             } else {
                 $rawComments = [

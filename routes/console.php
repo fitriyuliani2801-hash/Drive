@@ -16,3 +16,4 @@ Artisan::command('inspire', function () {
 | Pre-processing, dan Rekalkulasi Pemodelan Topik LDA.
 */
 Schedule::command('lda:auto-run')->everyMinute();
+Schedule::command('social:ingest')->everyFiveMinutes();
