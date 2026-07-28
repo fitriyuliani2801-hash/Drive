@@ -1,0 +1,11 @@
+import pandas as pd
+
+data = {
+    "nama": ["A", "B"],
+    "komentar": ["Bagus", "Mantap"]
+}
+
+df = pd.DataFrame(data)
+df.to_csv("data/komentar.csv", index=False)
+print("File CSV berhasil dibuat!")
+
