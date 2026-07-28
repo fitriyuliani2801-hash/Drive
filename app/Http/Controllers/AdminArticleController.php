@@ -6,6 +6,7 @@ use App\Models\Article;
 use App\Models\Category;
 use App\Models\SocialComment;
 use App\Services\SentimentAnalysisService;
+use App\Services\SocialUrlParserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -149,13 +150,13 @@ class AdminArticleController extends Controller
             'published_at' => now(),
         ]);
 
-        // Process multiline social media comments input by admin (if provided)
+        // Process comments: either from manual text or automatically parsed from the source URL
+        $posCount = 0;
+        $negCount = 0;
+        $neuCount = 0;
+
         if ($request->filled('comments_text')) {
             $lines = explode("\n", $request->comments_text);
-            $posCount = 0;
-            $negCount = 0;
-            $neuCount = 0;
-
             foreach ($lines as $index => $line) {
                 $trimmed = trim($line);
                 if (empty($trimmed)) continue;
@@ -164,25 +165,136 @@ class AdminArticleController extends Controller
 
                 SocialComment::create([
                     'article_id' => $article->id,
+                    'comment_id' => 'web_' . Str::random(10),
+                    'platform' => $article->platform ?: 'Metrologi',
                     'author_name' => '@netizen_metro' . ($index + 1),
+                    'author_avatar' => 'https://ui-avatars.com/api/?name=' . urlencode('@netizen_metro' . ($index + 1)) . '&background=0d9488&color=fff',
                     'raw_comment' => $trimmed,
                     'sentiment' => $sent['sentiment'],
                     'sentiment_score' => $sent['sentiment_score'],
+                    'status' => 'approved',
+                    'posted_at' => now(),
                 ]);
 
                 if ($sent['sentiment'] === 'positif') $posCount++;
                 elseif ($sent['sentiment'] === 'negatif') $negCount++;
                 else $neuCount++;
             }
+        } elseif ($request->filled('source_url')) {
+            // Automatically import comments from source URL
+            $parser = app(SocialUrlParserService::class);
+            $parsedData = $parser->parseUrl($request->source_url);
 
-            $article->update([
-                'positive_count' => $posCount,
-                'negative_count' => $negCount,
-                'neutral_count' => $neuCount,
-            ]);
+            if (!empty($parsedData['raw_comments'])) {
+                foreach ($parsedData['raw_comments'] as $c) {
+                    $sent = $this->sentimentEngine->analyzeSentiment($c['comment']);
+
+                    SocialComment::create([
+                        'article_id' => $article->id,
+                        'comment_id' => 'import_' . Str::random(10),
+                        'platform' => $parsedData['platform'],
+                        'author_name' => $c['author'],
+                        'author_avatar' => 'https://ui-avatars.com/api/?name=' . urlencode($c['author']) . '&background=0d9488&color=fff',
+                        'raw_comment' => $c['comment'],
+                        'sentiment' => $sent['sentiment'],
+                        'sentiment_score' => $sent['sentiment_score'],
+                        'status' => 'approved',
+                        'posted_at' => now(),
+                    ]);
+
+                    if ($sent['sentiment'] === 'positif') $posCount++;
+                    elseif ($sent['sentiment'] === 'negatif') $negCount++;
+                    else $neuCount++;
+                }
+            }
         }
 
+        $article->update([
+            'positive_count' => $posCount,
+            'negative_count' => $negCount,
+            'neutral_count' => $neuCount,
+        ]);
+
         return redirect()->route('admin.articles.index')->with('success', 'Artikel Berita berhasil diterbitkan!');
+    }
+
+    public function importLink(Request $request, SocialUrlParserService $parser)
+    {
+        $validated = $request->validate([
+            'url' => 'required|url',
+        ]);
+
+        $url = $validated['url'];
+
+        // Check if there is already an article with this source_url
+        $existing = Article::where('source_url', $url)->first();
+        if ($existing) {
+            return redirect()->route('admin.articles.index')->with('info', 'Artikel dari link tersebut sudah pernah di-import.');
+        }
+
+        $parsedData = $parser->parseUrl($url);
+
+        // Fetch a default category (e.g. Politik or the first category)
+        $category = Category::first();
+        $categoryId = $category ? $category->id : 1;
+
+        $verdict = str_contains(strtolower($url), 'hoax') || str_contains(strtolower($url), 'palsu') ? 'hoaks' : 'asli';
+        $verdictScore = 95.0;
+
+        $slug = Str::slug($parsedData['post_title']) . '-' . Str::random(5);
+
+        $article = Article::create([
+            'user_id' => auth()->id() ?? 1,
+            'category_id' => $categoryId,
+            'title' => $parsedData['post_title'],
+            'slug' => $slug,
+            'excerpt' => Str::limit($parsedData['post_content'], 150),
+            'content' => $parsedData['post_content'],
+            'source' => $parsedData['author_name'] ?? 'Medsos Publik',
+            'source_url' => $url,
+            'platform' => $parsedData['platform'],
+            'verdict' => $verdict,
+            'verdict_score' => $verdictScore,
+            'verdict_reasoning' => 'Di-import secara otomatis dari media sosial.',
+            'is_featured' => false,
+            'published_at' => now(),
+        ]);
+
+        // Process comments
+        $posCount = 0;
+        $negCount = 0;
+        $neuCount = 0;
+
+        if (!empty($parsedData['raw_comments'])) {
+            foreach ($parsedData['raw_comments'] as $c) {
+                $sent = $this->sentimentEngine->analyzeSentiment($c['comment']);
+
+                SocialComment::create([
+                    'article_id' => $article->id,
+                    'comment_id' => 'import_' . Str::random(10),
+                    'platform' => $parsedData['platform'],
+                    'author_name' => $c['author'],
+                    'author_avatar' => 'https://ui-avatars.com/api/?name=' . urlencode($c['author']) . '&background=0d9488&color=fff',
+                    'raw_comment' => $c['comment'],
+                    'sentiment' => $sent['sentiment'],
+                    'sentiment_score' => $sent['sentiment_score'],
+                    'status' => 'approved',
+                    'posted_at' => now(),
+                ]);
+
+                if ($sent['sentiment'] === 'positif') $posCount++;
+                elseif ($sent['sentiment'] === 'negatif') $negCount++;
+                else $neuCount++;
+            }
+        }
+
+        $article->update([
+            'positive_count' => $posCount,
+            'negative_count' => $negCount,
+            'neutral_count' => $neuCount,
+        ]);
+
+        return redirect()->route('admin.articles.index')->with('success', 'Artikel Berita berhasil di-import dan diterbitkan!');
     }
 
     public function edit($id)
@@ -302,7 +414,7 @@ class AdminArticleController extends Controller
             'comment_images' => $commentImagePaths,
         ]);
 
-        // Process new multiline social media comments input by admin (if provided)
+        // Process comments: either from manual text or automatically parsed from the source URL
         if ($request->filled('comments_text')) {
             $lines = explode("\n", $request->comments_text);
 
@@ -314,24 +426,52 @@ class AdminArticleController extends Controller
 
                 SocialComment::create([
                     'article_id' => $article->id,
+                    'comment_id' => 'web_' . Str::random(10),
+                    'platform' => $article->platform ?: 'Metrologi',
                     'author_name' => '@netizen_metro' . rand(10, 99),
+                    'author_avatar' => 'https://ui-avatars.com/api/?name=' . urlencode('@netizen_metro' . rand(10, 99)) . '&background=0d9488&color=fff',
                     'raw_comment' => $trimmed,
                     'sentiment' => $sent['sentiment'],
                     'sentiment_score' => $sent['sentiment_score'],
+                    'status' => 'approved',
+                    'posted_at' => now(),
                 ]);
             }
+        } elseif ($request->filled('source_url') && $article->comments()->count() == 0) {
+            // Automatically import comments if no comments exist yet
+            $parser = app(SocialUrlParserService::class);
+            $parsedData = $parser->parseUrl($request->source_url);
 
-            // Recalculate article comment counters
-            $posCount = SocialComment::where('article_id', $article->id)->where('sentiment', 'positif')->count();
-            $negCount = SocialComment::where('article_id', $article->id)->where('sentiment', 'negatif')->count();
-            $neuCount = SocialComment::where('article_id', $article->id)->where('sentiment', 'netral')->count();
+            if (!empty($parsedData['raw_comments'])) {
+                foreach ($parsedData['raw_comments'] as $c) {
+                    $sent = $this->sentimentEngine->analyzeSentiment($c['comment']);
 
-            $article->update([
-                'positive_count' => $posCount,
-                'negative_count' => $negCount,
-                'neutral_count' => $neuCount,
-            ]);
+                    SocialComment::create([
+                        'article_id' => $article->id,
+                        'comment_id' => 'import_' . Str::random(10),
+                        'platform' => $parsedData['platform'],
+                        'author_name' => $c['author'],
+                        'author_avatar' => 'https://ui-avatars.com/api/?name=' . urlencode($c['author']) . '&background=0d9488&color=fff',
+                        'raw_comment' => $c['comment'],
+                        'sentiment' => $sent['sentiment'],
+                        'sentiment_score' => $sent['sentiment_score'],
+                        'status' => 'approved',
+                        'posted_at' => now(),
+                    ]);
+                }
+            }
         }
+
+        // Recalculate article comment counters
+        $posCount = SocialComment::where('article_id', $article->id)->where('status', 'approved')->where('sentiment', 'positif')->count();
+        $negCount = SocialComment::where('article_id', $article->id)->where('status', 'approved')->where('sentiment', 'negatif')->count();
+        $neuCount = SocialComment::where('article_id', $article->id)->where('status', 'approved')->where('sentiment', 'netral')->count();
+
+        $article->update([
+            'positive_count' => $posCount,
+            'negative_count' => $negCount,
+            'neutral_count' => $neuCount,
+        ]);
 
         return redirect()->route('admin.articles.index')->with('success', 'Artikel Berita berhasil diperbarui!');
     }

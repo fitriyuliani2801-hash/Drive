@@ -12,7 +12,7 @@
                 OFFICIAL EDITORIAL DASHBOARD
             </span>
             <h1 class="text-2xl sm:text-3xl font-black text-slate-900 mt-1 font-heading">
-                Dashboard Redaksi METROLOGI NEWS
+                Dashboard Redaksi Berita Metrologi
             </h1>
             <p class="text-xs text-slate-500 font-medium">Ringkasan publikasi berita, statistik pembaca, serta hasil analisis sentimen tanggapan netizen Kota Metro.</p>
         </div>

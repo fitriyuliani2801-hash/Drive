@@ -19,6 +19,23 @@
         </a>
     </div>
 
+    <!-- Import Link Box -->
+    <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs space-y-4">
+        <div>
+            <h3 class="text-sm font-bold uppercase tracking-wider text-slate-900 font-heading flex items-center gap-1.5">
+                <i class="ri-links-line text-crimson-700"></i> Import Berita Otomatis dari Link Medsos
+            </h3>
+            <p class="text-[11px] text-slate-500">Masukkan link rujukan Instagram, TikTok, atau Facebook untuk meng-import berita beserta data komentar rujukan secara otomatis.</p>
+        </div>
+        <form action="{{ route('admin.articles.import-link') }}" method="POST" class="flex flex-col sm:flex-row gap-3">
+            @csrf
+            <input type="url" name="url" required placeholder="Contoh: https://www.instagram.com/p/..." class="flex-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-crimson-600 focus:bg-white font-medium">
+            <button type="submit" class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-crimson-700 text-white font-extrabold text-xs transition-colors font-heading flex items-center justify-center gap-1.5 shadow-xs">
+                <i class="ri-download-cloud-line"></i> Import &amp; Terbitkan
+            </button>
+        </form>
+    </div>
+
     <!-- Search & Filter Bar -->
     <form action="{{ route('admin.articles.index') }}" method="GET" class="bg-white p-4 rounded-3xl border border-slate-200 flex flex-col sm:flex-row items-center gap-3 shadow-xs">
         <div class="flex-1 relative w-full">

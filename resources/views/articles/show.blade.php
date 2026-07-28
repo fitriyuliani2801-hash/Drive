@@ -27,6 +27,16 @@
                         <i class="ri-star-fill text-amber-500"></i> HEADLINE UTAMA
                     </span>
                 @endif
+
+                @if($article->verdict === 'asli')
+                    <span class="px-3.5 py-1 rounded-full text-xs font-black bg-emerald-100 text-emerald-900 border border-emerald-300 flex items-center gap-1.5 font-heading">
+                        <i class="ri-checkbox-circle-fill text-emerald-600"></i> BERITA ASLI (FAKTA)
+                    </span>
+                @elseif($article->verdict === 'hoaks')
+                    <span class="px-3.5 py-1 rounded-full text-xs font-black bg-rose-100 text-rose-900 border border-rose-300 flex items-center gap-1.5 font-heading">
+                        <i class="ri-close-circle-fill text-rose-600"></i> BERITA HOAKS (DISINFORMASI)
+                    </span>
+                @endif
             </div>
 
             <span class="text-xs text-brand-700 font-bold ml-auto flex items-center gap-1.5 font-heading">

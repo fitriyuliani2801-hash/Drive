@@ -259,6 +259,7 @@
         </div>
     </nav>
 
+
     <!-- Flash Notifications -->
     @if(session('success'))
         <div class="bg-emerald-600 text-white px-4 py-3 text-center text-sm font-semibold flex items-center justify-center gap-2 shadow-md">

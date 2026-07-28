@@ -32,7 +32,7 @@ class MetrologiTest extends TestCase
     {
         $response = $this->get('/berita');
         $response->assertStatus(200);
-        $response->assertSee('Berita & Artikel Isu Perkotaan');
+        $response->assertSee('Kategori Publikasi & Berita Terbaru');
     }
 
     public function test_public_article_reader_shows_verdict_and_comments(): void

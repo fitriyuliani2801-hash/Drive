@@ -52,6 +52,7 @@ Route::middleware(['auth', EnsureAdmin::class])->prefix('admin')->name('admin.')
     Route::get('/articles', [AdminArticleController::class, 'index'])->name('articles.index');
     Route::get('/articles/create', [AdminArticleController::class, 'create'])->name('articles.create');
     Route::post('/articles', [AdminArticleController::class, 'store'])->name('articles.store');
+    Route::post('/articles/import-link', [AdminArticleController::class, 'importLink'])->name('articles.import-link');
     Route::get('/articles/{id}/edit', [AdminArticleController::class, 'edit'])->name('articles.edit');
     Route::post('/articles/{id}/update', [AdminArticleController::class, 'update'])->name('articles.update');
     Route::post('/articles/{id}/delete', [AdminArticleController::class, 'destroy'])->name('articles.destroy');
