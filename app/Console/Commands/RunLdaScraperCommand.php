@@ -37,54 +37,45 @@ class RunLdaScraperCommand extends Command
             'log_message' => 'Scheduler server memulai pencawalan komentar publik baru dan rekalkulasi LDA...',
         ]);
 
-        // 2. Auto-Scraper Simulation (Pengambilan komentar publik baru secara otomatis)
-        $newCommentTemplates = [
-            [
-                'platform' => 'Instagram',
-                'source_account' => '@pemkotmetro',
-                'author_name' => '@warga_metro_' . rand(10, 99),
-                'raw_text' => 'Perekonomian warga kota metro makin menggeliat dengan maraknya event UMKM dan pasar kuliner malam 👍',
-            ],
-            [
-                'platform' => 'X (Twitter)',
-                'source_account' => '@seputar_metro',
-                'author_name' => '@netizen_metro_' . rand(100, 999),
-                'raw_text' => 'Penyuluhan hukum gratis dari bagian hukum pemkot metro sangat berguna untuk menangani sengketa perdata warga.',
-            ],
-            [
-                'platform' => 'Berita Online Lampung',
-                'source_account' => '@radar_lampung',
-                'author_name' => 'Pengamat Publik Metro',
-                'raw_text' => 'Dinamika politik pembahasan APBD kota metro perlu keterbukaan publik agar alokasi anggaran daerah efektif.',
-            ],
-            [
-                'platform' => 'Instagram',
-                'source_account' => '@metro_info',
-                'author_name' => '@atlet_metro_' . rand(1, 50),
-                'raw_text' => 'Kejuaraan olahraga Porkot Metro di Stadion Tejosari sangat seru! Bibit atlet muda siap berprestasi.',
-            ],
-        ];
-
-        $articles = Article::all();
+        // 2. Import komentar dari file CSV (data/komentar.csv) hasil scraping
+        $csvPath = base_path('data/komentar.csv');
         $fetchedCount = 0;
 
-        foreach ($newCommentTemplates as $tmpl) {
-            $processed = $preprocessor->processPipeline($tmpl['raw_text']);
-            $article = $articles->isNotEmpty() ? $articles->random() : null;
+        if (file_exists($csvPath) && ($handle = fopen($csvPath, 'r')) !== false) {
+            $header = fgetcsv($handle); // Read header row
+            $articles = Article::all();
 
-            CrawledComment::create([
-                'article_id' => $article->id ?? null,
-                'platform' => $tmpl['platform'],
-                'source_account' => $tmpl['source_account'],
-                'author_name' => $tmpl['author_name'],
-                'raw_text' => $tmpl['raw_text'],
-                'cleaned_text' => $processed['cleaned_text'],
-                'tokens' => $processed['tokens'],
-                'stemmed_tokens' => $processed['stemmed_tokens'],
-                'scraped_at' => now(),
-            ]);
+            while (($row = fgetcsv($handle)) !== false) {
+                if (empty($row)) continue;
+                
+                // Determine platform & raw_text based on CSV columns
+                $platform = isset($row[0]) && in_array($row[0], ['Instagram', 'TikTok', 'YouTube', 'Facebook', 'Media Sosial']) ? $row[0] : 'Media Sosial';
+                $rawText = end($row); // Take comment text
 
-            $fetchedCount++;
+                if (empty(trim($rawText)) || strlen(trim($rawText)) < 3) continue;
+
+                // Check deduplication in crawled_comments
+                $exists = CrawledComment::where('raw_text', trim($rawText))->exists();
+                if (!$exists) {
+                    $processed = $preprocessor->processPipeline($rawText);
+                    $article = $articles->isNotEmpty() ? $articles->random() : null;
+
+                    CrawledComment::create([
+                        'article_id' => $article->id ?? null,
+                        'platform' => $platform,
+                        'source_account' => '@medsos_metro',
+                        'author_name' => '@netizen_metro',
+                        'raw_text' => trim($rawText),
+                        'cleaned_text' => $processed['cleaned_text'],
+                        'tokens' => $processed['tokens'],
+                        'stemmed_tokens' => $processed['stemmed_tokens'],
+                        'scraped_at' => now(),
+                    ]);
+
+                    $fetchedCount++;
+                }
+            }
+            fclose($handle);
         }
 
         // 3. Auto-run LDA Topic Modeling Engine

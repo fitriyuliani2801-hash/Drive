@@ -1,29 +1,39 @@
+import os
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 
-# 1. UBAH LINK INI DENGAN WEBSITE TARGET ANDA YANG ASLI
-url = "https://id.wikipedia.org/wiki/Metrologi" # <--- Ini hanya contoh link yang aktif
+# Pastikan folder data tersedia
+os.makedirs("data", exist_ok=True)
+
+# 1. Ganti URL ini dengan URL target Anda yang aktif
+url = "https://id.wikipedia.org/wiki/Kota_Metro"
 
 headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 }
 
-# Mengambil halaman web
-response = requests.get(url, headers=headers)
+try:
+    print(f"Mengakses URL: {url}")
+    response = requests.get(url, headers=headers, timeout=10)
 
-if response.status_code == 200:
-    soup = BeautifulSoup(response.text, 'html.parser')
-    
-    # Cari elemen data yang ingin diambil
-    data_list = []
-    for item in soup.find_all('p'):
-        data_list.append(item.text)
+    if response.status_code == 200:
+        soup = BeautifulSoup(response.text, 'html.parser')
         
-    # Simpan ke file CSV
-    # 2. UBAH NAMA FILE DI BAWAH INI MENJADI data/komentar.csv
-    df = pd.DataFrame(data_list, columns=['komentar'])
-    df.to_csv('data/komentar.csv', index=False, encoding='utf-8')
-    print("Data berhasil disimpan ke data/komentar.csv!")
-else:
-    print("Gagal mengakses halaman, status code:", response.status_code)
+        data_list = []
+        for item in soup.find_all('p'):
+            text = item.text.strip()
+            if text:
+                data_list.append(text)
+            
+        if data_list:
+            df = pd.DataFrame(data_list, columns=['komentar'])
+            df.to_csv('data/komentar.csv', index=False, encoding='utf-8')
+            print(f"[SUKSES] {len(data_list)} data berhasil disimpan ke data/komentar.csv")
+        else:
+            print("[INFO] Tidak ada data teks yang ditemukan.")
+    else:
+        print(f"[ERROR] Gagal mengakses halaman, status code: {response.status_code}")
+
+except Exception as e:
+    print(f"[ERROR] Terjadi kesalahan HTTP request: {e}")

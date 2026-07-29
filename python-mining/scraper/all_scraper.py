@@ -1,3 +1,4 @@
+import os
 import time
 import pandas as pd
 from selenium import webdriver
@@ -5,37 +6,65 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 
-# Konfigurasi Driver Browser Otomatis
+# 1. Pastikan folder penyimpanan data tersedia
+os.makedirs("data", exist_ok=True)
+
+# 2. Inisialisasi Driver Browser Chrome
 options = webdriver.ChromeOptions()
-# options.add_argument("--headless") # Buka jika tidak ingin jendela browser muncul fisik
+# options.add_argument("--headless") # Buka komentar ini jika ingin berjalan tanpa membuka jendela Chrome
+
+print("Membuka browser Chrome...")
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
-# Masukkan URL target media sosial/halaman publik
-url = "https://example.com/halaman-target" 
-driver.get(url)
-time.sleep(3)
+# 3. Ganti URL ini dengan URL postingan media sosial / situs berita target Anda
+url = "https://id.wikipedia.org/wiki/Kota_Metro" # <--- Ganti dengan URL target Anda
 
-# Proses Auto-Scrolling untuk meload semua data
-print("Sedang mengambil semua data dengan melakukan scrolling...")
-last_height = driver.execute_script("return document.body.scrollHeight")
+try:
+    print(f"Mengakses URL: {url}")
+    driver.get(url)
+    time.sleep(3)
 
-while True:
-    # Scroll ke paling bawah halaman
-    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-    time.sleep(2) # Tunggu halaman memuat data baru
+    # 4. Auto-scroll halaman untuk memuat komentar/data lebih banyak
+    print("Melakukan auto-scroll halaman...")
+    last_height = driver.execute_script("return document.body.scrollHeight")
     
-    new_height = driver.execute_script("return document.body.scrollHeight")
-    if new_height == last_height:
-        break # Berhenti jika sudah sampai paling bawah
-    last_height = new_height
+    scroll_attempts = 0
+    max_scrolls = 5  # Batas maksimum scroll untuk pengujian
 
-# Ambil elemen data yang diinginkan (sesuaikan tag/class HTML target)
-elements = driver.find_elements(By.TAG_NAME, "p") 
-data_list = [el.text for el in elements if el.text.strip() != ""]
+    while scroll_attempts < max_scrolls:
+        try:
+            driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            time.sleep(2)
+            
+            new_height = driver.execute_script("return document.body.scrollHeight")
+            if new_height == last_height:
+                break
+            last_height = new_height
+            scroll_attempts += 1
+        except Exception as scroll_err:
+            print(f"[PERINGATAN] Auto-scroll terhenti: {scroll_err}")
+            break
 
-driver.quit()
+    # 5. Ambil semua teks paragraf / komentar
+    print("Mengambil elemen data...")
+    elements = driver.find_elements(By.TAG_NAME, "p")
+    data_list = [el.text.strip() for el in elements if el.text.strip() != ""]
 
-# Simpan ke CSV
-df = pd.DataFrame(data_list, columns=["Teks"])
-df.to_csv("semua_data_sosmed.csv", index=False, encoding="utf-8")
-print(f"Berhasil! Total {len(data_list)} data berhasil disimpan ke semua_data_sosmed.csv")
+    # 6. Simpan hasil ke file CSV
+    if data_list:
+        df = pd.DataFrame(data_list, columns=["komentar"])
+        output_path = "data/komentar.csv"
+        df.to_csv(output_path, index=False, encoding="utf-8")
+        print(f"[SUKSES] {len(data_list)} data berhasil disimpan ke: {output_path}")
+    else:
+        print("[INFO] Tidak ada data teks yang ditemukan pada halaman tersebut.")
+
+except Exception as e:
+    print(f"[ERROR] Terjadi kesalahan atau koneksi terputus: {e}")
+
+finally:
+    try:
+        driver.quit()
+        print("Browser ditutup.")
+    except Exception:
+        pass

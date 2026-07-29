@@ -20,11 +20,7 @@ class SocialAnalysisSeeder extends Seeder
 
         $categories = Category::all()->keyBy('slug');
 
-        $sampleUrls = [
-            'https://www.instagram.com/p/C12345_pelatihan_umkm_metro',
-            'https://www.facebook.com/posts/hoax_pembagian_sembako_palsu_metro',
-            'https://www.tiktok.com/@metro.terkini/video/7391823910_porkot_olahraga',
-        ];
+        $sampleUrls = [];
 
         foreach ($sampleUrls as $url) {
             $parsed = $parser->parseUrl($url);

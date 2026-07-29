@@ -30,22 +30,14 @@
     </div>
 
     <!-- Filter Form -->
-
-    <form action="{{ route('analysis.comments') }}" method="GET" class="bg-white border border-slate-200/90 p-4 rounded-md flex flex-col md:flex-row items-center gap-4 shadow-xs">
-
     <form action="{{ route('admin.analysis.comments') }}" method="GET" class="bg-white border border-slate-200/90 p-4 rounded-2xl flex flex-col md:flex-row items-center gap-4 shadow-xs">
-
         <div class="flex-1 relative w-full">
             <i class="ri-search-line absolute left-3.5 top-3.5 text-slate-400"></i>
             <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari penulis, akun, atau isi komentar..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-md text-sm text-slate-900 focus:outline-none focus:border-teal-600">
         </div>
 
         <div class="w-full md:w-56">
-
-            <select name="platform" onchange="this.form.submit()" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-md text-xs font-bold text-slate-700 focus:outline-none focus:border-teal-600">
-
             <select name="platform" onchange="this.form.submit()" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-700 focus:outline-none focus:border-teal-600 font-heading">
-
                 <option value="">Semua Platform</option>
                 @foreach($platforms as $plat)
                     <option value="{{ $plat }}" {{ request('platform') == $plat ? 'selected' : '' }}>{{ $plat }}</option>
@@ -53,11 +45,7 @@
             </select>
         </div>
 
-
-        <a href="{{ route('analysis.comments') }}" class="px-4 py-2.5 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs">Reset</a>
-
         <a href="{{ route('admin.analysis.comments') }}" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs font-heading">Reset</a>
-
     </form>
 
     <!-- Table -->

@@ -590,6 +590,18 @@ class AdminArticleController extends Controller
     }
 
     /**
+     * Hapus Topik LDA
+     */
+    public function deleteLdaTopic($id)
+    {
+        $topic = LdaTopic::findOrFail($id);
+        $topicLabel = $topic->label;
+        $topic->delete();
+
+        return redirect()->route('admin.lda.index')->with('success', 'Topik "' . $topicLabel . '" berhasil dihapus!');
+    }
+
+    /**
      * Terbitkan Seluruh Topik LDA ke Publik Sekaligus
      */
     public function publishAllLdaTopics()

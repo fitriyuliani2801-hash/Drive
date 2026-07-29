@@ -157,24 +157,7 @@ class SocialMediaIngestionService
         $platformPrefix = strtolower(substr($platform, 0, 2));
         $comments = [];
 
-        $sampleTemplates = [
-            'Instagram' => [
-                ['author' => '@warga_metro_selatan', 'text' => 'Program penguatan UMKM Kota Metro ini sangat membantu pedagang kecil di sentra kuliner. Lanjutkan!'],
-                ['author' => '@pedagang_tejosari', 'text' => 'Semoga perbaikan fasilitas di Kota Metro bisa cepat selesai dan bebas dari macet.'],
-                ['author' => '@pemuda_metro_timur', 'text' => 'Porkot Metro 2026 seru banget, banyak atlet berbakat dari seluruh kecamatan Metro!'],
-            ],
-            'X' => [
-                ['author' => '@metro_news_net', 'text' => 'Update terkini mengenai bantuan hukum gratis dari Bagian Hukum Pemkot Metro untuk warga kurang mampu.'],
-                ['author' => '@info_metrolampung', 'text' => 'Apresiasi Pemkot Metro yang tanggap mendengar keluhan warga di media sosial.'],
-            ],
-            'Facebook' => [
-                ['author' => 'Budi Susanto (Metro Pusat)', 'text' => 'Alhamdulillah pelayanan publik di Kota Metro makin cepat dan ramah.'],
-                ['author' => 'Siti Nurhaliza', 'text' => 'Mohon penerangan jalan umum di daerah Metro Barat diperbanyak agar aman di malam hari.'],
-            ],
-            'YouTube' => [
-                ['author' => 'Metro TV Official Channel', 'text' => 'Liputan khusus pembangunan fasilitas olahraga dan infrastruktur perkotaan Kota Metro.'],
-            ]
-        ];
+        $sampleTemplates = [];
 
         $pool = $sampleTemplates[$platform] ?? [];
 

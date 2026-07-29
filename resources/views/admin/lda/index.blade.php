@@ -167,22 +167,31 @@
                     </div>
 
                     <!-- Admin Actions Bar -->
-                    <div class="pt-4 border-t border-slate-200/80 flex items-center justify-between gap-3 font-heading">
-                        <a href="{{ route('admin.lda.topics.edit', $topic->id) }}" class="px-4 py-2 rounded-xl bg-white border border-slate-300 hover:border-teal-600 hover:text-teal-700 text-slate-700 font-bold text-xs transition-all shadow-xs flex items-center gap-1">
-                            <i class="ri-edit-line text-teal-600"></i> Sunting Label &amp; Kata Kunci
-                        </a>
+                    <div class="pt-4 border-t border-slate-200/80 flex flex-wrap items-center justify-between gap-2 font-heading">
+                        <div class="flex items-center gap-2">
+                            <a href="{{ route('admin.lda.topics.edit', $topic->id) }}" class="px-3.5 py-2 rounded-xl bg-white border border-slate-300 hover:border-teal-600 hover:text-teal-700 text-slate-700 font-bold text-xs transition-all shadow-xs flex items-center gap-1">
+                                <i class="ri-edit-line text-teal-600"></i> Sunting
+                            </a>
+
+                            <form action="{{ route('admin.lda.topics.delete', $topic->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin MENGHAPUS topik ini?')">
+                                @csrf
+                                <button type="submit" class="px-3 py-2 rounded-xl bg-rose-50 border border-rose-200 hover:bg-rose-600 hover:text-white text-rose-700 font-bold text-xs transition-all flex items-center gap-1">
+                                    <i class="ri-delete-bin-line"></i> Hapus Topik
+                                </button>
+                            </form>
+                        </div>
 
                         @if($topic->is_published)
                             <form action="{{ route('admin.lda.topics.unpublish', $topic->id) }}" method="POST">
                                 @csrf
-                                <button type="submit" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-xs transition-colors flex items-center gap-1">
+                                <button type="submit" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-xs transition-colors flex items-center gap-1">
                                     <i class="ri-draft-line text-slate-500"></i> Kembalikan ke Draft
                                 </button>
                             </form>
                         @else
                             <form action="{{ route('admin.lda.topics.publish', $topic->id) }}" method="POST">
                                 @csrf
-                                <button type="submit" class="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs shadow-md transition-all flex items-center gap-1">
+                                <button type="submit" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs shadow-md transition-all flex items-center gap-1">
                                     <i class="ri-send-plane-fill"></i> Terbitkan ke Publik
                                 </button>
                             </form>

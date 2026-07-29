@@ -4,9 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Article;
 use App\Models\Category;
-use App\Models\SocialComment;
 use App\Models\User;
-use App\Services\SentimentAnalysisService;
 use Illuminate\Database\Seeder;
 
 class ArticleSeeder extends Seeder
@@ -18,7 +16,6 @@ class ArticleSeeder extends Seeder
         $hukum = Category::where('slug', 'hukum')->first();
         $politik = Category::where('slug', 'politik')->first();
         $olahraga = Category::where('slug', 'olahraga')->first();
-        $sentimentEngine = new SentimentAnalysisService();
 
         $sampleArticles = [
             [
@@ -35,12 +32,6 @@ class ArticleSeeder extends Seeder
                 'verdict_reasoning' => 'Berita terverifikasi FAKTA. Program pelatihan QRIS dan fasilitasi UMKM ini resmi diluncurkan oleh Dinas Perdagangan Kota Metro dan terkonfirmasi laporan pelaksanaan lapangan.',
                 'is_featured' => true,
                 'published_at' => now()->subDays(1),
-                'comments' => [
-                    ['author' => '@rudi_kuliner', 'comment' => 'Alhamdulillah program ini sangat bermanfaat sekali untuk pedagang kecil seperti kami, omzet jadi naik!'],
-                    ['author' => '@anisa_metro', 'comment' => 'Mantap banget Pemkot Metro, transaksi QRIS jadi gampang dan jualan makin laris 👍🔥'],
-                    ['author' => '@hendra_pasar', 'comment' => 'Semoga pelatihan digital UMKM ini terus berlanjut ke seluruh kecamatan lain di kota metro.'],
-                    ['author' => '@dewa_kecewa', 'comment' => 'Antreannya tadi agak panjang pas pendaftaran, mohon diperbaiki teknisnya.'],
-                ],
             ],
             [
                 'title' => 'Sosialisasi Perda Penyuluhan Bantuan Hukum Gratis Bagi Warga Kurang Mampu',
@@ -56,11 +47,6 @@ class ArticleSeeder extends Seeder
                 'verdict_reasoning' => 'Berita terverifikasi FAKTA. Kegiatan penyuluhan Perda Bantuan Hukum diawasi langsung oleh Bagian Hukum Setda Kota Metro.',
                 'is_featured' => true,
                 'published_at' => now()->subDays(3),
-                'comments' => [
-                    ['author' => 'Ahmad Pengacara', 'comment' => 'Sangat mengapresiasi adanya penyuluhan hukum gratis dari Bagian Hukum Pemkot Metro untuk warga kurang mampu.'],
-                    ['author' => 'Siti Rahmawati', 'comment' => 'Konsultasi bantuan hukum gratis sangat membantu masyarakat yang awam aturan hukum perdata.'],
-                    ['author' => 'Dedi Warga', 'comment' => 'Pentingnya sosialisasi aturan Perda ketertiban agar tidak ada pelanggaran di kawasan umum.'],
-                ],
             ],
             [
                 'title' => 'Klarifikasi Isu Pembagian Sembako Gratis Tanpa Syarat di Alun-Alun Metro',
@@ -76,12 +62,6 @@ class ArticleSeeder extends Seeder
                 'verdict_reasoning' => 'PERINGATAN HOAKS / DISINFORMASI. Informasi pembagian sembako tanpa syarat ini adalah hoaks penipuan yang telah disanggah resmi oleh Dinas Kominfo Kota Metro.',
                 'is_featured' => false,
                 'published_at' => now()->subDays(5),
-                'comments' => [
-                    ['author' => '@budi_warga', 'comment' => 'Bohong banget ini! Saya tadi ke alun-alun tidak ada pembagian apa-apa, hoax penipuan meresahkan!'],
-                    ['author' => '@siti_metro', 'comment' => 'Wah bahaya berita begini bikin warga berkerumun kasihan yang udah datang jauh-jauh.'],
-                    ['author' => '@diki_kritik', 'comment' => 'Tolong Satpol PP usut pembuat kabar bohong ini sangat meresahkan.'],
-                    ['author' => '@hendra_99', 'comment' => 'Terima kasih informasinya min, hampir aja saya percaya hoax ini.'],
-                ],
             ],
             [
                 'title' => 'Pekan Olahraga Kota (Porkot) Metro 2026 Resmi Dibuka di Stadion Tejosari',
@@ -97,48 +77,19 @@ class ArticleSeeder extends Seeder
                 'verdict_reasoning' => 'Berita terverifikasi FAKTA. Kejuaraan Porkot Metro 2026 resmi dibuka oleh Wali Kota Metro di Stadion Tejosari.',
                 'is_featured' => false,
                 'published_at' => now()->subDays(7),
-                'comments' => [
-                    ['author' => '@sport_metro', 'comment' => 'Seru banget pembukaan Porkot Metro di Stadion Tejosari! Atlet sepakbola muda bakatnya luar biasa ⚽🔥'],
-                    ['author' => '@riko_runner', 'comment' => 'Dukungan KONI dan pemkot bikin atlet metro makin semangat raih prestasi!'],
-                    ['author' => '@maya_badminton', 'comment' => 'Fasilitas gelanggang olahraga Porkot Metro 2026 sangat memotivasi pemuda berolahraga.'],
-                ],
             ],
         ];
 
         foreach ($sampleArticles as $artData) {
-            $commentsList = $artData['comments'] ?? [];
-            unset($artData['comments']);
-
-            $article = Article::updateOrCreate(
+            Article::updateOrCreate(
                 ['slug' => $artData['slug']],
-                array_merge($artData, ['user_id' => $admin->id ?? 1])
+                array_merge($artData, [
+                    'user_id' => $admin->id ?? 1,
+                    'positive_count' => 0,
+                    'negative_count' => 0,
+                    'neutral_count' => 0,
+                ])
             );
-
-            $posCount = 0;
-            $negCount = 0;
-            $neuCount = 0;
-
-            foreach ($commentsList as $c) {
-                $sent = $sentimentEngine->analyzeSentiment($c['comment']);
-
-                SocialComment::create([
-                    'article_id' => $article->id,
-                    'author_name' => $c['author'],
-                    'raw_comment' => $c['comment'],
-                    'sentiment' => $sent['sentiment'],
-                    'sentiment_score' => $sent['sentiment_score'],
-                ]);
-
-                if ($sent['sentiment'] === 'positif') $posCount++;
-                elseif ($sent['sentiment'] === 'negatif') $negCount++;
-                else $neuCount++;
-            }
-
-            $article->update([
-                'positive_count' => $posCount,
-                'negative_count' => $negCount,
-                'neutral_count' => $neuCount,
-            ]);
         }
     }
 }

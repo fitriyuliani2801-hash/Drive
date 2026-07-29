@@ -124,14 +124,15 @@
             </p>
         </div>
 
-        <div class="flex flex-wrap items-center gap-3 shrink-0">
-            <a href="{{ route('analysis.index') }}" class="px-5 py-3 rounded-md bg-teal-600 hover:bg-teal-700 text-white font-extrabold text-xs shadow-lg shadow-teal-600/30 transition-all font-heading flex items-center gap-2">
-                <i class="ri-pie-chart-2-line text-lg"></i> Buka Dashboard LDA &rarr;
-            </a>
-            <a href="{{ route('analysis.vectorization') }}" class="px-4 py-3 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs border border-slate-700 transition-all font-heading flex items-center gap-1.5">
-                <i class="ri-matrix-line text-indigo-400"></i> Inspeksi Matriks DTM
-            </a>
-        </div>
+      <div class="flex flex-wrap items-center gap-3 shrink-0">
+    <!-- Tambahkan awalan admin. pada route -->
+    <a href="{{ route('admin.analysis.index') }}" class="px-5 py-3 rounded-md bg-teal-600 hover:bg-teal-700 text-white font-extrabold text-xs shadow-lg shadow-teal-600/30 transition-all font-heading flex items-center gap-2">
+        <i class="ri-pie-chart-2-line text-lg"></i> Buka Dashboard LDA &rarr;
+    </a>
+    <a href="{{ route('admin.analysis.vectorization') }}" class="px-4 py-3 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs border border-slate-700 transition-all font-heading flex items-center gap-1.5">
+        <i class="ri-matrix-line text-indigo-400"></i> Inspeksi Matriks DTM
+    </a>
+</div>
     </div>
 </div>
 

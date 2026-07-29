@@ -57,9 +57,6 @@
     </div>
 
     <!-- Search Form -->
-
-    <form action="{{ route('analysis.preprocessing') }}" method="GET" class="bg-white border border-slate-200/90 p-4 rounded-md flex items-center gap-4 shadow-xs">
-
     <form action="{{ route('admin.analysis.preprocessing') }}" method="GET" class="bg-white border border-slate-200/90 p-4 rounded-2xl flex items-center gap-4 shadow-xs">
 
         <div class="flex-1 relative">

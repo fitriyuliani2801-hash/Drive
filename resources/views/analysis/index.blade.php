@@ -70,17 +70,10 @@
                 </h3>
             </div>
             <div class="flex items-center gap-2">
-
-                <a href="{{ route('analysis.preprocessing') }}" class="px-3.5 py-1.5 rounded-md bg-teal-900/60 hover:bg-teal-800 border border-teal-500/30 text-teal-300 text-xs font-bold font-heading transition-all">
-                    Step 2: Preprocessing Teks &rarr;
-                </a>
-                <a href="{{ route('analysis.vectorization') }}" class="px-3.5 py-1.5 rounded-md bg-indigo-900/60 hover:bg-indigo-800 border border-indigo-500/30 text-indigo-300 text-xs font-bold font-heading transition-all">
-
                 <a href="{{ route('admin.analysis.preprocessing') }}" class="px-3.5 py-1.5 rounded-xl bg-teal-900/60 hover:bg-teal-800 border border-teal-500/30 text-teal-300 text-xs font-bold font-heading transition-all">
                     Step 2: Preprocessing Teks &rarr;
                 </a>
                 <a href="{{ route('admin.analysis.vectorization') }}" class="px-3.5 py-1.5 rounded-xl bg-indigo-900/60 hover:bg-indigo-800 border border-indigo-500/30 text-indigo-300 text-xs font-bold font-heading transition-all">
-
                     Step 3: Matriks DTM &rarr;
                 </a>
             </div>

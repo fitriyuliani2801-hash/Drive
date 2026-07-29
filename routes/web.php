@@ -52,6 +52,7 @@ Route::middleware(['auth', EnsureAdmin::class])->prefix('admin')->name('admin.')
     Route::post('/lda/topics/{id}/update', [AdminArticleController::class, 'updateLdaTopic'])->name('lda.topics.update');
     Route::post('/lda/topics/{id}/publish', [AdminArticleController::class, 'publishLdaTopic'])->name('lda.topics.publish');
     Route::post('/lda/topics/{id}/unpublish', [AdminArticleController::class, 'unpublishLdaTopic'])->name('lda.topics.unpublish');
+    Route::post('/lda/topics/{id}/delete', [AdminArticleController::class, 'deleteLdaTopic'])->name('lda.topics.delete');
     Route::post('/lda/publish-all', [AdminArticleController::class, 'publishAllLdaTopics'])->name('lda.publish-all');
     Route::post('/lda/run-analysis', [AdminArticleController::class, 'runLdaAnalysis'])->name('lda.run-analysis');
     Route::post('/lda/analyze-url', [AdminArticleController::class, 'analyzeSocialMediaUrl'])->name('lda.analyze-url');

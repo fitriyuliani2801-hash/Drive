@@ -149,6 +149,6 @@ class AnalysisController extends Controller
     public function runAnalysis()
     {
         Artisan::call('lda:auto-run');
-        return redirect()->route('analysis.index')->with('success', 'Sistem Task Scheduler & Pipeline LDA Topic Modeling otomatis berhasil dijalankan!');
+        return redirect()->route('admin.analysis.index')->with('success', 'Sistem Task Scheduler & Pipeline LDA Topic Modeling otomatis berhasil dijalankan!');
     }
 }
