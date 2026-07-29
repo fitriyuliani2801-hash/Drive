@@ -205,6 +205,32 @@
         </div>
     </div>
 
+    <!-- STICKY NATIONAL EDITORIAL NAV BAR -->
+    <nav class="sticky top-0 z-40 glass-nav shadow-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-14 overflow-x-auto custom-scrollbar">
+                
+                <div class="flex items-center gap-2 text-xs font-bold font-heading py-2 shrink-0">
+                    <a href="{{ route('home') }}" class="px-4 py-2 rounded-xl transition-all flex items-center gap-1.5 {{ request()->routeIs('home') ? 'bg-crimson-700 text-white shadow-md font-extrabold' : 'text-slate-700 hover:bg-red-50 hover:text-crimson-700' }}">
+                        <i class="ri-fire-fill text-amber-300"></i> Beranda &amp; Headline
+                    </a>
+                    <a href="{{ route('articles.index') }}" class="px-4 py-2 rounded-xl transition-all flex items-center gap-1.5 {{ request()->routeIs('articles.index') || request()->routeIs('articles.show') ? 'bg-crimson-700 text-white shadow-md font-extrabold' : 'text-slate-700 hover:bg-red-50 hover:text-crimson-700' }}">
+                        <i class="ri-newspaper-line text-crimson-600"></i> Metro Terkini
+                    </a>
+                    <span class="text-slate-300 font-normal">|</span>
+                    <a href="{{ route('articles.index', ['category' => 'ekonomi']) }}" class="px-3.5 py-2 rounded-xl text-slate-700 hover:text-crimson-700 hover:bg-red-50 transition-all flex items-center gap-1.5">
+                        <i class="ri-price-tag-3-line text-brand-600"></i> Ekonomi &amp; UMKM
+                    </a>
+                    <a href="{{ route('articles.index', ['category' => 'hukum']) }}" class="px-3.5 py-2 rounded-xl text-slate-700 hover:text-crimson-700 hover:bg-red-50 transition-all flex items-center gap-1.5">
+                        <i class="ri-scales-3-line text-brand-600"></i> Hukum &amp; Perda
+                    </a>
+                    <a href="{{ route('articles.index', ['category' => 'politik']) }}" class="px-3.5 py-2 rounded-xl text-slate-700 hover:text-crimson-700 hover:bg-red-50 transition-all flex items-center gap-1.5">
+                        <i class="ri-government-line text-brand-600"></i> Politik &amp; APBD
+                    </a>
+                    <a href="{{ route('articles.index', ['category' => 'olahraga']) }}" class="px-3.5 py-2 rounded-xl text-slate-700 hover:text-crimson-700 hover:bg-red-50 transition-all flex items-center gap-1.5">
+                        <i class="ri-trophy-line text-brand-600"></i> Olahraga &amp; Porkot
+                    </a>
+                </div>
 
 
 

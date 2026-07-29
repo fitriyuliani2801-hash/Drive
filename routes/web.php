@@ -19,17 +19,6 @@ Route::post('/berita/{slug}/comment', [ArticleController::class, 'storeComment']
 
 /*
 |--------------------------------------------------------------------------
-| LDA Topic Modeling Public & Admin Analysis Routes
-|--------------------------------------------------------------------------
-*/
-Route::get('/analisis', [AnalysisController::class, 'index'])->name('analysis.index');
-Route::get('/analisis/preprocessing', [AnalysisController::class, 'preprocessing'])->name('analysis.preprocessing');
-Route::get('/analisis/vektorisasi', [AnalysisController::class, 'vectorization'])->name('analysis.vectorization');
-Route::get('/analisis/komentar', [AnalysisController::class, 'comments'])->name('analysis.comments');
-Route::post('/analisis/run', [AnalysisController::class, 'runAnalysis'])->name('analysis.run');
-
-/*
-|--------------------------------------------------------------------------
 | Authentication Routes
 |--------------------------------------------------------------------------
 */
@@ -42,7 +31,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->n
 
 /*
 |--------------------------------------------------------------------------
-| Admin Editorial Portal Routes
+| Admin Editorial & Machine Learning NLP Routes (ADMIN ONLY)
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth', EnsureAdmin::class])->prefix('admin')->name('admin.')->group(function () {
@@ -56,4 +45,21 @@ Route::middleware(['auth', EnsureAdmin::class])->prefix('admin')->name('admin.')
     Route::get('/articles/{id}/edit', [AdminArticleController::class, 'edit'])->name('articles.edit');
     Route::post('/articles/{id}/update', [AdminArticleController::class, 'update'])->name('articles.update');
     Route::post('/articles/{id}/delete', [AdminArticleController::class, 'destroy'])->name('articles.destroy');
+
+    // Admin LDA Topic Review & Publication Management
+    Route::get('/lda', [AdminArticleController::class, 'ldaIndex'])->name('lda.index');
+    Route::get('/lda/topics/{id}/edit', [AdminArticleController::class, 'editLdaTopic'])->name('lda.topics.edit');
+    Route::post('/lda/topics/{id}/update', [AdminArticleController::class, 'updateLdaTopic'])->name('lda.topics.update');
+    Route::post('/lda/topics/{id}/publish', [AdminArticleController::class, 'publishLdaTopic'])->name('lda.topics.publish');
+    Route::post('/lda/topics/{id}/unpublish', [AdminArticleController::class, 'unpublishLdaTopic'])->name('lda.topics.unpublish');
+    Route::post('/lda/publish-all', [AdminArticleController::class, 'publishAllLdaTopics'])->name('lda.publish-all');
+    Route::post('/lda/run-analysis', [AdminArticleController::class, 'runLdaAnalysis'])->name('lda.run-analysis');
+    Route::post('/lda/analyze-url', [AdminArticleController::class, 'analyzeSocialMediaUrl'])->name('lda.analyze-url');
+
+    // Machine Learning NLP & DTM Vectorization Inspection (Admin Only)
+    Route::get('/analisis', [AnalysisController::class, 'index'])->name('analysis.index');
+    Route::get('/analisis/preprocessing', [AnalysisController::class, 'preprocessing'])->name('analysis.preprocessing');
+    Route::get('/analisis/vektorisasi', [AnalysisController::class, 'vectorization'])->name('analysis.vectorization');
+    Route::get('/analisis/komentar', [AnalysisController::class, 'comments'])->name('analysis.comments');
+    Route::post('/analisis/run', [AnalysisController::class, 'runAnalysis'])->name('analysis.run');
 });

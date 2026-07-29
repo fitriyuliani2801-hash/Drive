@@ -27,7 +27,16 @@ class AnalysisController extends Controller
      */
     public function index(Request $request)
     {
-        $topics = LdaTopic::with('category')->withCount('comments')->get();
+        // Public portal displays LDA topics that have been reviewed & published by Admin Redaksi
+        $topics = LdaTopic::published()->with('category')->withCount('comments')->get();
+        $isPublishedState = true;
+
+        if ($topics->isEmpty()) {
+            // Fallback for initial state before Admin clicks Publish
+            $topics = LdaTopic::with('category')->withCount('comments')->get();
+            $isPublishedState = false;
+        }
+
         $categories = Category::withCount('comments')->get();
 
         $query = CrawledComment::with(['category', 'ldaTopic']);

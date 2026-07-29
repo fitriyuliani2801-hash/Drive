@@ -91,22 +91,32 @@
                     </a>
 
                     <div class="pt-3 pb-1">
-                        <span class="text-[10px] font-extrabold uppercase tracking-widest text-slate-500 px-4">Machine Learning LDA</span>
+                        <span class="text-[10px] font-extrabold uppercase tracking-widest text-slate-500 px-4">Analisis Topic LDA &amp; NLP</span>
                     </div>
 
-                    <a href="{{ route('analysis.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('analysis.index') ? 'bg-teal-700 text-white shadow-md' : 'text-teal-400 hover:text-white hover:bg-slate-900' }}">
-                        <i class="ri-pulse-line text-base"></i>
-                        <span>Analisis Topic LDA</span>
+                    <a href="{{ route('admin.lda.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.lda.*') ? 'bg-teal-700 text-white shadow-md' : 'text-teal-400 hover:text-white hover:bg-slate-900' }}">
+                        <i class="ri-shield-check-line text-base"></i>
+                        <span>Kelola Publikasi Topik LDA</span>
                     </a>
 
-                    <a href="{{ route('analysis.preprocessing') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('analysis.preprocessing') ? 'bg-slate-800 text-white shadow-md' : 'text-slate-400 hover:text-white hover:bg-slate-900' }}">
-                        <i class="ri-sound-module-line text-base"></i>
-                        <span>Pre-processing NLP</span>
+                    <a href="{{ route('admin.analysis.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.analysis.index') ? 'bg-slate-800 text-white shadow-md' : 'text-slate-400 hover:text-white hover:bg-slate-900' }}">
+                        <i class="ri-pulse-line text-base text-teal-400"></i>
+                        <span>Dashboard LDA Engine</span>
                     </a>
 
-                    <a href="{{ route('analysis.vectorization') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('analysis.vectorization') ? 'bg-slate-800 text-white shadow-md' : 'text-slate-400 hover:text-white hover:bg-slate-900' }}">
-                        <i class="ri-matrix-line text-base"></i>
-                        <span>Matriks DTM &amp; TF-IDF</span>
+                    <a href="{{ route('admin.analysis.preprocessing') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.analysis.preprocessing') ? 'bg-slate-800 text-white shadow-md' : 'text-slate-400 hover:text-white hover:bg-slate-900' }}">
+                        <i class="ri-sound-module-line text-base text-teal-400"></i>
+                        <span>Pre-processing NLP (Step 2)</span>
+                    </a>
+
+                    <a href="{{ route('admin.analysis.vectorization') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.analysis.vectorization') ? 'bg-slate-800 text-white shadow-md' : 'text-slate-400 hover:text-white hover:bg-slate-900' }}">
+                        <i class="ri-matrix-line text-base text-indigo-400"></i>
+                        <span>Matriks DTM &amp; TF-IDF (Step 3)</span>
+                    </a>
+
+                    <a href="{{ route('admin.analysis.comments') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.analysis.comments') ? 'bg-slate-800 text-white shadow-md' : 'text-slate-400 hover:text-white hover:bg-slate-900' }}">
+                        <i class="ri-database-2-line text-base text-amber-400"></i>
+                        <span>Data Scraper Komentar (Step 1)</span>
                     </a>
                 </nav>
             </div>

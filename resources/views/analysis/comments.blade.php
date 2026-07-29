@@ -1,9 +1,9 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
-@section('title', 'Data Komentar Scraper - Metrologi')
+@section('title', 'Data Komentar Scraper - Admin Redaksi')
 
 @section('content')
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+<div class="max-w-7xl mx-auto space-y-8">
     
     <!-- Title Header -->
     <div class="bg-white border border-slate-200/90 rounded-md p-6 sm:p-8 shadow-xs space-y-2">
@@ -11,6 +11,17 @@
             <i class="ri-database-2-line"></i> Data Scraper & Aggregator
         </span>
         <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2">
+    <div class="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-xs space-y-2">
+        <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-teal-700 bg-teal-50 px-3 py-1 rounded-full border border-teal-200 uppercase tracking-wider font-heading">
+                <i class="ri-database-2-line"></i> Data Scraper &amp; Aggregator
+            </span>
+            <a href="{{ route('admin.analysis.index') }}" class="text-xs font-bold text-slate-500 hover:text-slate-900 font-heading">
+                &larr; Kembali ke Dashboard LDA
+            </a>
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2 font-heading">
+
             Data Komentar Mentah Hasil Scraper Sosial Media
         </h1>
         <p class="text-xs sm:text-sm text-slate-600 max-w-3xl leading-relaxed">
@@ -19,14 +30,22 @@
     </div>
 
     <!-- Filter Form -->
+
     <form action="{{ route('analysis.comments') }}" method="GET" class="bg-white border border-slate-200/90 p-4 rounded-md flex flex-col md:flex-row items-center gap-4 shadow-xs">
+
+    <form action="{{ route('admin.analysis.comments') }}" method="GET" class="bg-white border border-slate-200/90 p-4 rounded-2xl flex flex-col md:flex-row items-center gap-4 shadow-xs">
+
         <div class="flex-1 relative w-full">
             <i class="ri-search-line absolute left-3.5 top-3.5 text-slate-400"></i>
             <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari penulis, akun, atau isi komentar..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-md text-sm text-slate-900 focus:outline-none focus:border-teal-600">
         </div>
 
         <div class="w-full md:w-56">
+
             <select name="platform" onchange="this.form.submit()" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-md text-xs font-bold text-slate-700 focus:outline-none focus:border-teal-600">
+
+            <select name="platform" onchange="this.form.submit()" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-700 focus:outline-none focus:border-teal-600 font-heading">
+
                 <option value="">Semua Platform</option>
                 @foreach($platforms as $plat)
                     <option value="{{ $plat }}" {{ request('platform') == $plat ? 'selected' : '' }}>{{ $plat }}</option>
@@ -34,7 +53,11 @@
             </select>
         </div>
 
+
         <a href="{{ route('analysis.comments') }}" class="px-4 py-2.5 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs">Reset</a>
+
+        <a href="{{ route('admin.analysis.comments') }}" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs font-heading">Reset</a>
+
     </form>
 
     <!-- Table -->

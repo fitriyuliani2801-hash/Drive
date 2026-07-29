@@ -1,17 +1,22 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
-@section('title', 'Langkah 3: Inspeksi Matriks DTM & TF-IDF Vectorization - Metrologi')
+@section('title', 'Langkah 3: Inspeksi Matriks DTM & TF-IDF Vectorization - Admin Redaksi')
 
 @section('content')
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+<div class="max-w-7xl mx-auto space-y-8">
     
     <!-- Title Header -->
     <div class="bg-white border border-slate-200/90 rounded-md p-6 sm:p-8 shadow-xs space-y-2">
         <div class="flex items-center justify-between">
+
             <span class="text-xs font-bold text-indigo-700 bg-indigo-50 px-3 py-1 rounded-md border border-indigo-200 uppercase tracking-wider font-heading">
                 <i class="ri-matrix-line"></i> Langkah 3: Vectorization & DTM Matrix
+
+            <span class="text-xs font-bold text-indigo-700 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-200 uppercase tracking-wider font-heading">
+                <i class="ri-matrix-line"></i> Langkah 3: Vectorization &amp; DTM Matrix
+
             </span>
-            <a href="{{ route('analysis.index') }}" class="text-xs font-bold text-slate-500 hover:text-slate-900 font-heading">
+            <a href="{{ route('admin.analysis.index') }}" class="text-xs font-bold text-slate-500 hover:text-slate-900 font-heading">
                 &larr; Kembali ke Dashboard LDA
             </a>
         </div>

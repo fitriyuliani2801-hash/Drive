@@ -1,18 +1,27 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
-@section('title', 'Inspeksi Pre-Processing Teks NLP - Metrologi')
+@section('title', 'Inspeksi Pre-Processing Teks NLP - Admin Redaksi')
 
 @section('content')
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+<div class="max-w-7xl mx-auto space-y-8">
     
     <!-- Title Header -->
+
     <div class="bg-white border border-slate-200/90 rounded-md p-6 sm:p-8 shadow-xs space-y-2">
         <div class="flex items-center gap-2">
             <span class="text-xs font-bold text-teal-700 bg-teal-50 px-3 py-1 rounded-md border border-teal-200 uppercase tracking-wider">
+
+    <div class="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-xs space-y-2">
+        <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-teal-700 bg-teal-50 px-3 py-1 rounded-full border border-teal-200 uppercase tracking-wider font-heading">
+
                 <i class="ri-sound-module-line"></i> NLP Pre-Processing Pipeline
             </span>
+            <a href="{{ route('admin.analysis.index') }}" class="text-xs font-bold text-slate-500 hover:text-slate-900 font-heading">
+                &larr; Kembali ke Dashboard LDA
+            </a>
         </div>
-        <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2">
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2 font-heading">
             Transparansi Tahapan Pre-Processing Teks Bahasa Indonesia
         </h1>
         <p class="text-xs sm:text-sm text-slate-600 max-w-3xl leading-relaxed">
@@ -48,7 +57,11 @@
     </div>
 
     <!-- Search Form -->
+
     <form action="{{ route('analysis.preprocessing') }}" method="GET" class="bg-white border border-slate-200/90 p-4 rounded-md flex items-center gap-4 shadow-xs">
+
+    <form action="{{ route('admin.analysis.preprocessing') }}" method="GET" class="bg-white border border-slate-200/90 p-4 rounded-2xl flex items-center gap-4 shadow-xs">
+
         <div class="flex-1 relative">
             <i class="ri-search-line absolute left-3.5 top-3.5 text-slate-400"></i>
             <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari teks komentar..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-md text-sm text-slate-900 focus:outline-none focus:border-teal-600">

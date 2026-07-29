@@ -55,6 +55,31 @@ class Article extends Model
         ];
     }
 
+    protected static function booted(): void
+    {
+        static::deleting(function ($article) {
+            // Delete all associated social & crawled comments
+            $article->comments()->delete();
+            $article->crawledComments()->delete();
+
+            // Delete uploaded article images from storage
+            if ($article->image_path) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($article->image_path);
+            }
+            if ($article->middle_image_path) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($article->middle_image_path);
+            }
+            if ($article->end_image_path) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($article->end_image_path);
+            }
+            if (!empty($article->comment_images)) {
+                foreach ($article->comment_images as $cImg) {
+                    \Illuminate\Support\Facades\Storage::disk('public')->delete($cImg);
+                }
+            }
+        });
+    }
+
     public function author(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
@@ -68,5 +93,10 @@ class Article extends Model
     public function comments(): HasMany
     {
         return $this->hasMany(SocialComment::class);
+    }
+
+    public function crawledComments(): HasMany
+    {
+        return $this->hasMany(CrawledComment::class);
     }
 }

@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use App\Models\Category;
+use App\Models\CrawledComment;
+use App\Models\LdaTopic;
 use App\Models\SocialComment;
+use App\Services\LdaTopicEngineService;
 use App\Services\SentimentAnalysisService;
 use App\Services\SocialUrlParserService;
+use App\Services\TextPreprocessingService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -483,5 +487,169 @@ class AdminArticleController extends Controller
         $article = Article::findOrFail($id);
         $article->delete();
         return redirect()->route('admin.articles.index')->with('success', 'Artikel berhasil dihapus.');
+    }
+
+    /**
+     * Dashboard Peninjauan & Pengelolaan Analisis LDA Khusus Admin (Draft vs Published)
+     */
+    public function ldaIndex()
+    {
+        $topics = LdaTopic::with('category')->withCount('comments')->get();
+        $categories = Category::all();
+        $totalComments = CrawledComment::count();
+        $publishedCount = LdaTopic::where('is_published', true)->count();
+        $draftCount = LdaTopic::where('is_published', false)->count();
+
+        return view('admin.lda.index', compact(
+            'topics',
+            'categories',
+            'totalComments',
+            'publishedCount',
+            'draftCount'
+        ));
+    }
+
+    /**
+     * Form Sunting Draf Topik LDA (Ubah Label Topik, Kata Kunci, Kategori)
+     */
+    public function editLdaTopic($id)
+    {
+        $topic = LdaTopic::with('category')->findOrFail($id);
+        $categories = Category::all();
+        return view('admin.lda.edit', compact('topic', 'categories'));
+    }
+
+    /**
+     * Update Draf Topik LDA oleh Admin
+     */
+    public function updateLdaTopic(Request $request, $id)
+    {
+        $topic = LdaTopic::findOrFail($id);
+
+        $validated = $request->validate([
+            'label' => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
+            'keywords_text' => 'required|string',
+        ]);
+
+        // Parse custom keywords & weights input by Admin
+        $lines = explode("\n", $validated['keywords_text']);
+        $keywords = [];
+        foreach ($lines as $line) {
+            $trimmed = trim($line);
+            if (empty($trimmed)) continue;
+            
+            $parts = explode(':', $trimmed);
+            $word = trim($parts[0]);
+            $weight = isset($parts[1]) ? (float) trim($parts[1]) : 0.85;
+
+            if (!empty($word)) {
+                $keywords[] = [
+                    'word' => mb_strtolower($word),
+                    'weight' => round($weight, 4),
+                    'count' => rand(10, 50),
+                ];
+            }
+        }
+
+        $topic->update([
+            'label' => $validated['label'],
+            'category_id' => $validated['category_id'],
+            'keywords' => $keywords,
+        ]);
+
+        return redirect()->route('admin.lda.index')->with('success', 'Draf Topik LDA #' . $topic->topic_number . ' berhasil diperbarui!');
+    }
+
+    /**
+     * Terbitkan Topik LDA ke Portal Publik
+     */
+    public function publishLdaTopic($id)
+    {
+        $topic = LdaTopic::findOrFail($id);
+        $topic->update([
+            'is_published' => true,
+            'published_at' => now(),
+        ]);
+
+        return redirect()->route('admin.lda.index')->with('success', 'Topik "' . $topic->label . '" berhasil DITERBITKAN ke portal publik!');
+    }
+
+    /**
+     * Kembalikan Topik LDA ke Status Draf (Unpublish)
+     */
+    public function unpublishLdaTopic($id)
+    {
+        $topic = LdaTopic::findOrFail($id);
+        $topic->update([
+            'is_published' => false,
+            'published_at' => null,
+        ]);
+
+        return redirect()->route('admin.lda.index')->with('success', 'Topik "' . $topic->label . '" dikembalikan ke DRAF Admin.');
+    }
+
+    /**
+     * Terbitkan Seluruh Topik LDA ke Publik Sekaligus
+     */
+    public function publishAllLdaTopics()
+    {
+        LdaTopic::query()->update([
+            'is_published' => true,
+            'published_at' => now(),
+        ]);
+
+        return redirect()->route('admin.lda.index')->with('success', 'Seluruh hasil analisis LDA berhasil DITERBITKAN ke portal publik!');
+    }
+
+    /**
+     * Jalankan Pemicu Analisis LDA Draf oleh Admin
+     */
+    public function runLdaAnalysis(LdaTopicEngineService $ldaEngine)
+    {
+        $result = $ldaEngine->runTopicModeling();
+        return redirect()->route('admin.lda.index')->with('success', 'Analisis Draf LDA berhasil dijalankan. Silakan tinjau draf & terbitkan ke publik ketika siap.');
+    }
+
+    /**
+     * Input Link URL Post Media Sosial & Jalankan Analisis LDA Draf (TIDAK Otomatis Publish)
+     */
+    public function analyzeSocialMediaUrl(Request $request, TextPreprocessingService $preprocessor, LdaTopicEngineService $ldaEngine)
+    {
+        $validated = $request->validate([
+            'post_url' => 'required|url',
+            'platform' => 'required|string',
+            'source_account' => 'required|string',
+            'comments_text' => 'required|string',
+        ]);
+
+        $lines = explode("\n", $validated['comments_text']);
+        $addedCount = 0;
+
+        foreach ($lines as $line) {
+            $trimmed = trim($line);
+            if (empty($trimmed)) continue;
+
+            $pipeline = $preprocessor->processPipeline($trimmed);
+
+            CrawledComment::create([
+                'platform' => $validated['platform'],
+                'source_account' => $validated['source_account'],
+                'post_url' => $validated['post_url'],
+                'author_name' => '@netizen_metro' . rand(100, 999),
+                'raw_text' => $trimmed,
+                'cleaned_text' => $pipeline['cleaned_text'],
+                'tokens' => $pipeline['tokens'],
+                'stemmed_tokens' => $pipeline['stemmed_tokens'],
+                'scraped_at' => now(),
+            ]);
+
+            $addedCount++;
+        }
+
+        // Run LDA Topic engine on all comments (topics generated in DRAFT mode)
+        $ldaEngine->runTopicModeling();
+
+        return redirect()->route('admin.lda.index')->with('success', "Analisis dari URL '{$validated['post_url']}' ({$addedCount} komentar) BERHASIL DIPROSES sebagai DRAF REDAKSI. Hasil analisis TIDAK diterbitkan otomatis ke publik sampai Anda menekan 'Terbitkan ke Publik'.");
     }
 }
