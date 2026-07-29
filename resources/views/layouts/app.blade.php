@@ -235,7 +235,9 @@
         </div>
     </nav>
 
-
+            </div>
+        </div>
+    </nav>
 
     <!-- Flash Notifications -->
     @if(session('success'))
