@@ -231,8 +231,17 @@
                         <i class="ri-trophy-line text-brand-600"></i> Olahraga &amp; Porkot
                     </a>
                 </div>
+                @auth
+                    <div class="flex items-center gap-2 shrink-0 pl-4 border-l border-slate-200">
+                        <a href="{{ route('admin.dashboard') }}" class="px-3.5 py-2 rounded-xl bg-slate-900 text-white hover:bg-crimson-700 font-extrabold text-xs transition-colors flex items-center gap-1.5 shadow-xs">
+                            <i class="ri-dashboard-line"></i> Dashboard Redaksi
+                        </a>
+                    </div>
+                @endauth
 
-
+            </div>
+        </div>
+    </nav>
 
     <!-- Flash Notifications -->
     @if(session('success'))
