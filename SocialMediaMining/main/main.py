@@ -1,22 +1,31 @@
-from database.database import connect
+import subprocess
+import os
+import sys
 
-conn = connect()
+# Dapatkan path root project
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+sys.path.append(project_root)
 
-if conn.is_connected():
-    print("Koneksi database berhasil!")
+print("=====================================================")
+print("MEMULAI PIPELINE INTEGRASI SOCIAL MEDIA MINING")
+print("=====================================================")
 
-    for item in hasil:
+# 1. Jalankan script import berita YouTube
+print("\n[LANGKAH 1] Mengekstrak berita rujukan dari YouTube...")
+try:
+    script_path = os.path.join(project_root, "SocialMediaMining", "script", "youtube.py")
+    subprocess.run(["python", script_path], check=True)
+except Exception as e:
+    print(f"[WARN] Peringatan: Gagal menjalankan youtube.py: {e}")
 
-    simpan(
+# 2. Jalankan db_scraper.py untuk meng-import komentar secara otomatis ke database
+print("\n[LANGKAH 2] Menjalankan scraper komentar sosial media...")
+try:
+    scraper_path = os.path.join(project_root, "python-mining", "scraper", "db_scraper.py")
+    subprocess.run(["python", scraper_path], check=True)
+except Exception as e:
+    print(f"[ERROR] Gagal menjalankan db_scraper.py: {e}")
 
-        "Youtube",
-
-        keyword,
-
-        item["username"],
-
-        item["comment"],
-
-        url
-
-    )
+print("\n=====================================================")
+print("PROSES PIPELINE SELESAI!")
+print("=====================================================")
