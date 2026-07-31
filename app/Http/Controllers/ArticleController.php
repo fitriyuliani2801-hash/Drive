@@ -24,10 +24,8 @@ class ArticleController extends Controller
         $totalViews = Article::sum('views_count');
         $categoriesCount = Category::count();
 
-        $featuredArticles = Article::with('category')->where('is_featured', true)->latest()->take(4)->get();
-        if ($featuredArticles->isEmpty()) {
-            $featuredArticles = Article::with('category')->latest()->take(4)->get();
-        }
+        // Selalu tampilkan 4 berita terbaru di bagian Headline utama agar otomatis berganti setiap ada berita baru
+        $featuredArticles = Article::with('category')->latest()->take(4)->get();
 
         $latestArticles = Article::with('category')->latest()->take(6)->get();
         $categories = Category::withCount('articles')->get();
@@ -40,6 +38,7 @@ class ArticleController extends Controller
             'latestArticles',
             'categories'
         ));
+
     }
 
     public function index(Request $request)
@@ -66,7 +65,8 @@ class ArticleController extends Controller
         }
 
         $articles = $query->paginate(9)->withQueryString();
-        $featuredArticles = Article::with('category')->where('is_featured', true)->latest()->take(2)->get();
+        // Selalu tampilkan 2 berita terbaru di bagian featured sidebar
+        $featuredArticles = Article::with('category')->latest()->take(2)->get();
         $categories = Category::withCount('articles')->get();
         $districts = ['Metro Pusat', 'Metro Timur', 'Metro Barat', 'Metro Utara', 'Metro Selatan'];
 
