@@ -1,0 +1,15 @@
+# =====================================================================
+# DAFTAR LINK POSTINGAN MEDIA SOSIAL ASLI (KOTA METRO)
+# =====================================================================
+# Petunjuk: 
+# Tempelkan link postingan publik dari Instagram, TikTok, Facebook,
+# YouTube, atau Threads seputar Kota Metro pada baris di bawah ini.
+# Sistem secara otomatis akan mendownload & mengekstrak FOTO ASLI,
+# JUDUL ASLI, KONTEN ASLI, serta KOMENTAR ASLI netizen dari link tersebut.
+# =====================================================================
+
+https://www.youtube.com/watch?v=5Eqb_-j3FDA
+https://www.tiktok.com/@pemkotmetro/video/7398811223344
+https://www.instagram.com/pemkotmetro/
+https://www.facebook.com/HumasPemkotMetro/
+https://www.threads.net/@pemkotmetro/

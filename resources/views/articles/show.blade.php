@@ -101,9 +101,9 @@
         @if($article->image_path)
             <div class="space-y-2">
                 <div class="rounded-3xl overflow-hidden border border-slate-200 bg-slate-50 max-h-[500px] shadow-sm">
-                    <img src="{{ asset('storage/' . $article->image_path) }}" alt="{{ $article->title }}" class="w-full h-full object-cover">
+                    <img src="{{ str_starts_with($article->image_path, 'http') ? $article->image_path : asset('storage/' . $article->image_path) }}" alt="{{ $article->title }}" class="w-full h-full object-cover">
                 </div>
-                <p class="text-[11px] text-slate-500 italic text-center font-medium">Foto Utama: Liputan Khusus Redaksi METROLOGI NEWS Kota Metro.</p>
+                <p class="text-[11px] text-slate-500 italic text-center font-medium">Foto Utama: Dokumentasi Postingan Media Sosial Kota Metro.</p>
             </div>
         @endif
 
@@ -139,7 +139,7 @@
                     @if($article->middle_image_path && ($idx + 1) === $midIndex)
                         <div class="my-8 space-y-2">
                             <div class="rounded-3xl overflow-hidden border border-slate-200 bg-slate-50 max-h-[450px] shadow-sm">
-                                <img src="{{ asset('storage/' . $article->middle_image_path) }}" alt="{{ $article->title }} - Pertengahan" class="w-full h-full object-cover">
+                                <img src="{{ str_starts_with($article->middle_image_path, 'http') ? $article->middle_image_path : asset('storage/' . $article->middle_image_path) }}" alt="{{ $article->title }} - Pertengahan" class="w-full h-full object-cover">
                             </div>
                             <p class="text-[11px] text-slate-500 italic text-center font-medium">Foto Pertengahan: Dokumentasi Lapangan Redaksi METROLOGI NEWS Kota Metro.</p>
                         </div>
@@ -151,7 +151,7 @@
                 @if($article->middle_image_path)
                     <div class="my-8 space-y-2">
                         <div class="rounded-3xl overflow-hidden border border-slate-200 bg-slate-50 max-h-[450px] shadow-sm">
-                            <img src="{{ asset('storage/' . $article->middle_image_path) }}" alt="{{ $article->title }} - Pertengahan" class="w-full h-full object-cover">
+                            <img src="{{ str_starts_with($article->middle_image_path, 'http') ? $article->middle_image_path : asset('storage/' . $article->middle_image_path) }}" alt="{{ $article->title }} - Pertengahan" class="w-full h-full object-cover">
                         </div>
                         <p class="text-[11px] text-slate-500 italic text-center font-medium">Foto Pertengahan: Dokumentasi Lapangan Redaksi METROLOGI NEWS Kota Metro.</p>
                     </div>
@@ -162,7 +162,7 @@
             @if($article->end_image_path)
                 <div class="mt-8 space-y-2">
                     <div class="rounded-3xl overflow-hidden border border-slate-200 bg-slate-50 max-h-[450px] shadow-sm">
-                        <img src="{{ asset('storage/' . $article->end_image_path) }}" alt="{{ $article->title }} - Akhiran" class="w-full h-full object-cover">
+                        <img src="{{ str_starts_with($article->end_image_path, 'http') ? $article->end_image_path : asset('storage/' . $article->end_image_path) }}" alt="{{ $article->title }} - Akhiran" class="w-full h-full object-cover">
                     </div>
                     <p class="text-[11px] text-slate-500 italic text-center font-medium">Foto Akhiran: Dokumentasi Penutup Liputan Redaksi METROLOGI NEWS Kota Metro.</p>
                 </div>

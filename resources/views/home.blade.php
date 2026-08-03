@@ -78,7 +78,7 @@
 
                         @if($secHeadline->image_path)
                             <div class="w-20 h-20 rounded-md bg-slate-100 overflow-hidden shrink-0 border border-slate-200">
-                                <img src="{{ asset('storage/' . $secHeadline->image_path) }}" alt="{{ $secHeadline->title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                <img src="{{ str_starts_with($secHeadline->image_path, 'http') ? $secHeadline->image_path : asset('storage/' . $secHeadline->image_path) }}" alt="{{ $secHeadline->title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                             </div>
                         @endif
 
@@ -161,7 +161,7 @@
                         <!-- Thumbnail Image -->
                         @if($art->image_path)
                             <div class="w-full sm:w-48 h-40 sm:h-36 rounded-md overflow-hidden bg-slate-100 shrink-0 border border-slate-200 relative">
-                                <img src="{{ asset('storage/' . $art->image_path) }}" alt="{{ $art->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                <img src="{{ str_starts_with($art->image_path, 'http') ? $art->image_path : asset('storage/' . $art->image_path) }}" alt="{{ $art->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                                 <div class="absolute top-2 left-2">
                                     <span class="px-2.5 py-0.5 rounded-md font-black text-white text-[10px] uppercase font-heading bg-crimson-700 shadow-xs">
                                         {{ $art->category->name }}

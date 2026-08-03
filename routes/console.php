@@ -17,3 +17,5 @@ Artisan::command('inspire', function () {
 */
 Schedule::command('lda:auto-run')->everyMinute();
 Schedule::command('social:ingest')->everyFiveMinutes();
+Schedule::command('app:auto-publish-news')->everyFiveMinutes();
+

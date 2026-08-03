@@ -256,6 +256,7 @@ class AdminArticleController extends Controller
             'slug' => $slug,
             'excerpt' => Str::limit($parsedData['post_content'], 150),
             'content' => $parsedData['post_content'],
+            'image_path' => $parsedData['media_image'] ?? null,
             'source' => $parsedData['author_name'] ?? 'Medsos Publik',
             'source_url' => $url,
             'platform' => $parsedData['platform'],
