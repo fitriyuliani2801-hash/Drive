@@ -82,28 +82,8 @@ def save_article(url, platform, title, content, image_url, author):
     (user_id, category_id, title, slug, excerpt, content, image_path, source, source_url, platform, verdict, verdict_score, verdict_reasoning, published_at, created_at, updated_at) 
     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW(), NOW(), NOW())
     """
-    values = (
-        1, # user_id (Admin)
-        category_id,
-        title,
-        slug,
-        excerpt,
-        content,
-        image_url,
-        author,
-        url,
-        platform,
-        "asli",
-        95.0,
-        f"Di-import otomatis dari postingan viral {platform}.",
-        now() if hasattr(time, 'strftime') else time.strftime('%Y-%m-%d %H:%M:%S')
-    )
-    
     try:
-        # Gunakan query MySQL datetime
-        import datetime
-        pub_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        cursor.execute(sql, (1, category_id, title, slug, excerpt, content, image_url, author, url, platform, "asli", 95.0, f"Di-import otomatis dari postingan viral {platform}.", pub_time))
+        cursor.execute(sql, (1, category_id, title, slug, excerpt, content, image_url, author, url, platform, "asli", 95.0, f"Di-import otomatis dari postingan viral {platform}."))
         db.commit()
         print(f"[SUCCESS] Berhasil mengimpor berita baru ({platform}): {title[:50]}...")
     except Exception as e:
@@ -268,44 +248,69 @@ except Exception as e:
     print(f"[ERROR] Gagal memindai Facebook: {e}")
 
 # ==========================================
-# 4. AUTO-INGEST YOUTUBE (PemerintahKotaMetro Videos)
+# 4. AUTO-INGEST YOUTUBE (Multi-Channel Pemantauan Berita Kota Metro)
 # ==========================================
-print("\n[YOUTUBE] Memindai video berita Kota Metro...")
+print("\n[YOUTUBE] Memindai video berita Kota Metro dari berbagai channel...")
 try:
     daftar_channel = [
-        "https://www.youtube.com/@PemerintahKotaMetro/videos"
+        {"url": "https://www.youtube.com/@PemerintahKotaMetro/videos", "default_author": "Pemerintah Kota Metro"},
+        {"url": "https://www.youtube.com/@tribunlampung/videos", "default_author": "Tribun Lampung"},
+        {"url": "https://www.youtube.com/@kompastvlampung/videos", "default_author": "KompasTV Lampung"},
+        {"url": "https://www.youtube.com/@KupasTVLampung/videos", "default_author": "Kupas TV Lampung"},
+        {"url": "https://www.youtube.com/@radarlampungtv/videos", "default_author": "Radar Lampung TV"}
     ]
-    ydl_opts_flat = {'quiet': True, 'extract_flat': True, 'playlistend': 3}
-    video_urls = []
+    ydl_opts_flat = {'quiet': True, 'extract_flat': True, 'playlistend': 8}
+    video_targets = []
     
     with yt_dlp.YoutubeDL(ydl_opts_flat) as ydl:
-        for channel_url in daftar_channel:
+        for item in daftar_channel:
+            channel_url = item["url"]
             try:
+                print(f"Memindai channel: {channel_url}")
                 channel_info = ydl.extract_info(channel_url, download=False)
                 if 'entries' in channel_info:
                     for entry in channel_info['entries']:
                         video_id = entry.get('id')
-                        if video_id:
-                            video_urls.append(f"https://www.youtube.com/watch?v={video_id}")
+                        video_title = entry.get('title', '')
+                        
+                        # Filter agar hanya mengambil video yang berkaitan dengan "Metro"
+                        title_lower = video_title.lower()
+                        is_metro_related = any(k in title_lower for k in [
+                            'metro', 'kota metro', 'pemkot metro', 'samber', 'tejosari', 
+                            'ganjar asri', 'metro barat', 'metro timur', 'metro utara', 
+                            'metro selatan', 'metro pusat'
+                        ])
+                        
+                        # Selalu terima video dari channel resmi Pemkot Metro, tapi filter channel berita umum
+                        is_official = "@PemerintahKotaMetro" in channel_url
+                        
+                        if video_id and (is_official or is_metro_related):
+                            video_targets.append({
+                                "url": f"https://www.youtube.com/watch?v={video_id}",
+                                "author": item["default_author"]
+                            })
             except Exception as e:
-                print(f"[WARN] Gagal memindai YouTube channel: {e}")
+                print(f"[WARN] Gagal memindai YouTube channel {channel_url}: {e}")
                 
-    print(f"Ditemukan {len(video_urls)} video YouTube terbaru.")
+    print(f"Ditemukan {len(video_targets)} video YouTube terbaru yang relevan dengan Kota Metro.")
     
     ydl_opts_detail = {'quiet': True, 'extract_flat': False}
     with yt_dlp.YoutubeDL(ydl_opts_detail) as ydl:
-        for url in video_urls:
+        for target in video_targets:
+            url = target["url"]
+            author = target["author"]
             try:
                 cursor.execute("SELECT id FROM articles WHERE source_url = %s", (url,))
                 if cursor.fetchone():
                     continue
                     
+                print(f"Mengekstrak detail video baru: {url}")
                 info = ydl.extract_info(url, download=False)
                 judul_berita = info.get("title", "Tidak ada judul")
                 thumbnail_url = info.get("thumbnail") or (info.get("thumbnails")[0].get("url") if info.get("thumbnails") else None)
                 description = info.get("description", f"Video berita Kota Metro: {judul_berita}")
                 
-                save_article(url, "YouTube", judul_berita, description, thumbnail_url, "Pemerintah Kota Metro")
+                save_article(url, "YouTube", judul_berita, description, thumbnail_url, author)
             except Exception as e:
                 print(f"[WARN] Gagal parse video YouTube {url}: {e}")
 except Exception as e:

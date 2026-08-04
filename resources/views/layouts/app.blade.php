@@ -164,8 +164,8 @@
                 
                 <!-- Logo & Subtitle -->
                 <a href="{{ route('home') }}" class="flex items-center gap-3.5 group">
-                    <div class="w-14 h-14 shrink-0 group-hover:scale-105 transition-transform duration-300">
-                        <img src="{{ asset('images/Logo-Kota-Metro.png') }}" alt="Logo Kota Metro" class="w-full h-full object-contain scale-[1.6]">
+                    <div class="w-14 h-14 shrink-0 group-hover:scale-105 transition-transform duration-300 flex items-center justify-center">
+                        <img src="{{ asset('images/Logo-Kota-Metro.png') }}" alt="Logo Kota Metro" class="w-full h-full object-contain scale-[1.6]" style="max-width: 56px; max-height: 56px; width: 56px; height: 56px;">
                     </div>
                     <div>
                         <span class="text-3xl sm:text-4xl font-black tracking-tight text-slate-900 flex items-center gap-2.5 font-heading">
@@ -264,8 +264,8 @@
             <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
                 <div class="md:col-span-2 space-y-4">
                     <div class="flex items-center gap-3">
-                        <div class="w-12 h-12 shrink-0">
-                            <img src="{{ asset('images/Logo-Kota-Metro.png') }}" alt="Logo Kota Metro" class="w-full h-full object-contain scale-[1.6]">
+                        <div class="w-12 h-12 shrink-0 flex items-center justify-center">
+                            <img src="{{ asset('images/Logo-Kota-Metro.png') }}" alt="Logo Kota Metro" class="w-full h-full object-contain scale-[1.6]" style="max-width: 48px; max-height: 48px; width: 48px; height: 48px;">
                         </div>
                         <span class="text-3xl font-black tracking-tight text-white font-heading">METROLOGI<span class="text-crimson-600">NEWS</span></span>
                     </div>
