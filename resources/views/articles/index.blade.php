@@ -70,7 +70,7 @@
                         <div>
                             @if($article->image_path)
                                 <div class="h-48 w-full bg-slate-100 overflow-hidden relative">
-                                    <img src="{{ asset('storage/' . $article->image_path) }}" alt="{{ $article->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                    <img src="{{ str_starts_with($article->image_path, 'http') ? $article->image_path : asset('storage/' . $article->image_path) }}" alt="{{ $article->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                                 </div>
                             @endif
 

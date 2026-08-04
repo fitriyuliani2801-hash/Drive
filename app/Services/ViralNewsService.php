@@ -28,7 +28,7 @@ class ViralNewsService
     {
         $publishedCount = 0;
 
-        // Kumpulan Berita & Postingan Medsos Kota Metro dengan FOTO UNIK & ARTIKEL LENGKAP
+        // Kumpulan Berita & Postingan Medsos Kota Metro dari Instagram, TikTok, YouTube, dan Facebook
         $metroSocialData = [
             [
                 'url' => 'https://www.instagram.com/p/C8_MetroJalanProtokol_2026',
@@ -57,6 +57,19 @@ class ViralNewsService
                 'verdict' => 'asli',
             ],
             [
+                'url' => 'https://www.youtube.com/watch?v=exampleMetroNews',
+                'platform' => 'YouTube',
+                'author' => 'MetroTV',
+                'title' => 'Kota Metro Siap Gelar Program Pemberdayaan Masyarakat dan Wisata Kuliner',
+                'excerpt' => 'Video resmi YouTube menampilkan agenda pemberdayaan masyarakat, edukasi, serta potensi wisata kuliner Kota Metro.',
+                'main_image' => 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=1200&q=80',
+                'middle_image' => 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=1000&q=80',
+                'end_image' => 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1000&q=80',
+                'content' => "KOTA METRO - Kanal resmi YouTube Kota Metro menampilkan rangkaian kegiatan pemberdayaan masyarakat dan promosi destinasi wisata kuliner yang terus berkembang di wilayah perkotaan.\n\nVideo ini menyoroti sinergi antara pemerintah, pelaku UMKM, dan warga dalam menciptakan suasana ekonomi yang lebih aktif dan inklusif.\n\nKehadiran platform video resmi ini membantu masyarakat memahami program pemerintah secara lebih rinci, terutama soal edukasi publik, festival lokal, dan pembangunan sarana sosial.",
+                'district' => 'Metro Timur',
+                'verdict' => 'asli',
+            ],
+            [
                 'url' => 'https://www.facebook.com/HumasPemkotMetro/posts/99182736452',
                 'platform' => 'Facebook',
                 'author' => 'Humas Pemkot Metro',
@@ -67,19 +80,6 @@ class ViralNewsService
                 'end_image' => 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=1000&q=80',
                 'content' => "KOTA METRO - Sebagai bentuk wujud nyata pelayanan keadilan bagi seluruh lapisan warga, Bagian Hukum Setda Kota Metro gencar melaksanakan Sosialisasi Peraturan Daerah tentang Pemberian Layanan Bantuan Hukum Gratis.\n\nProgram advokasi dan penyuluhan ini menyasar warga kurang mampu di lima kecamatan, meliputi Metro Pusat, Metro Timur, Metro Barat, Metro Utara, dan Metro Selatan. Melalui pos bantuan hukum ini, masyarakat yang menghadapi permasalahan perdata maupun administrasi dapat berkonsultasi secara cuma-cuma.\n\nTim advokat terverifikasi disiagakan di setiap kelurahan untuk mendampingi warga yang membutuhkan bantuan penyelesaian sengketa serta pemberian pemahaman kesadaran hukum.\n\nPemerintah Kota Metro berharap program ini dapat memberikan kepastian hukum dan perlindungan hak-hak sipil bagi masyarakat yang membutuhkan perlindungan hukum di Kota Metro.",
                 'district' => 'Metro Timur',
-                'verdict' => 'asli',
-            ],
-            [
-                'url' => 'https://www.threads.net/@seputar_metro/post/D99182377',
-                'platform' => 'Threads',
-                'author' => '@seputar_metro',
-                'title' => 'Wajah Baru Taman Kota Metro: Area Terbuka Hijau Asri Lengkap dengan WiFi Gratis',
-                'excerpt' => 'Revitalisasi RTH Taman Merdeka Kota Metro resmi selesai. Pengunjung dapat menikmati sarana bermain anak ramah lingkungan dan koneksi internet publik gratis.',
-                'main_image' => 'https://images.unsplash.com/photo-1577495508048-b635879837f1?auto=format&fit=crop&w=1200&q=80',
-                'middle_image' => 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1000&q=80',
-                'end_image' => 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1000&q=80',
-                'content' => "KOTA METRO - Penataan kawasan Ruang Terbuka Hijau (RTH) Taman Merdeka Kota Metro kini telah rampung dan tampil makin memikat. Wajah baru taman pusat kota ini dirancang menjadi ruang publik inklusif yang aman, nyaman, dan edukatif bagi keluarga.\n\nBerbagai fasilitas baru ditambahkan, seperti area bermain anak berbasis bahan ramah lingkungan, jalur pedestrian berbahan batu alam, bangku taman beratap, serta titik akses internet gratis yang ditenagai panel surya.\n\nTaman Kota Metro kini menjadi destinasi olahraga ringan, kegiatan komunitas anak muda, serta rekreasi keluarga favorit di akhir pekan tanpa dikenakan biaya masuk.\n\nWarga diimbau untuk bersama-sama menjaga kebersihan lingkungan dan merawat fasilitas umum yang telah dibangun agar dapat dinikmati bersama dalam jangka panjang.",
-                'district' => 'Metro Pusat',
                 'verdict' => 'asli',
             ]
         ];
@@ -92,7 +92,7 @@ class ViralNewsService
                 $line = trim($line);
                 if (!empty($line) && !str_starts_with($line, '#')) {
                     $parsed = $this->parserService->parseUrl($line);
-                    if (!empty($parsed['post_title'])) {
+                    if ($this->parserService->isSupportedPlatform($line) && !empty($parsed['post_title'])) {
                         $metroSocialData[] = [
                             'url' => $line,
                             'platform' => $parsed['platform'],
@@ -100,11 +100,12 @@ class ViralNewsService
                             'title' => $parsed['post_title'],
                             'excerpt' => Str::limit($parsed['post_content'], 160),
                             'main_image' => $parsed['media_image'] ?: 'https://images.unsplash.com/photo-1590674899484-d5640e854abe?auto=format&fit=crop&w=1200&q=80',
-                            'middle_image' => 'https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=1000&q=80',
-                            'end_image' => 'https://images.unsplash.com/photo-1584467735871-8e85353a8413?auto=format&fit=crop&w=1000&q=80',
+                            'middle_image' => $parsed['middle_image'] ?? 'https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=1000&q=80',
+                            'end_image' => $parsed['end_image'] ?? 'https://images.unsplash.com/photo-1584467735871-8e85353a8413?auto=format&fit=crop&w=1000&q=80',
                             'content' => $parsed['post_content'] . "\n\n(Laporan dan tanggapan publik dikutip langsung dari postingan resmi media sosial " . $parsed['platform'] . " akun: " . $parsed['author_name'] . ")",
                             'district' => 'Metro Pusat',
                             'verdict' => 'asli',
+                            'comments' => $parsed['raw_comments'] ?? [],
                         ];
                     }
                 }
@@ -138,6 +139,7 @@ class ViralNewsService
             $excerpt = $post['excerpt'];
             $contentFull = $post['content'];
             $district = $post['district'] ?? 'Metro Pusat';
+            $parsedComments = $post['comments'] ?? null;
 
             // Deteksi kategori
             $titleLower = strtolower($postTitle . ' ' . $contentFull);
@@ -177,14 +179,13 @@ class ViralNewsService
             ]);
 
             // Dapatkan komentar netizen dan hitung sentimennya
-            $parsedComments = $this->parserService->parseUrl($url, $postTitle);
-            if (!empty($parsedComments['raw_comments'])) {
-                foreach ($parsedComments['raw_comments'] as $c) {
+            if (!empty($parsedComments)) {
+                foreach ($parsedComments as $c) {
                     $sent = $this->sentimentEngine->analyzeSentiment($c['comment']);
                     SocialComment::create([
                         'article_id'     => $article->id,
                         'comment_id'     => 'sosmed_' . Str::random(10),
-                        'platform'       => $platform,
+                        'platform'       => $c['platform'] ?? $platform,
                         'author_name'    => $c['author'],
                         'author_avatar'  => 'https://ui-avatars.com/api/?name=' . urlencode($c['author']) . '&background=0d9488&color=fff',
                         'raw_comment'    => $c['comment'],

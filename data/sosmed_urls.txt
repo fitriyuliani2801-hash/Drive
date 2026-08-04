@@ -6,10 +6,10 @@
 # YouTube, atau Threads seputar Kota Metro pada baris di bawah ini.
 # Sistem secara otomatis akan mendownload & mengekstrak FOTO ASLI,
 # JUDUL ASLI, KONTEN ASLI, serta KOMENTAR ASLI netizen dari link tersebut.
+# 
+# PENTING: JANGAN menempelkan link Profil Utama (seperti facebook.com/username/)
+# melainkan tempelkan link postingan spesifik (seperti facebook.com/username/posts/123)
 # =====================================================================
 
-https://www.youtube.com/watch?v=5Eqb_-j3FDA
-https://www.tiktok.com/@pemkotmetro/video/7398811223344
-https://www.instagram.com/pemkotmetro/
-https://www.facebook.com/HumasPemkotMetro/
-https://www.threads.net/@pemkotmetro/
+https://www.instagram.com/p/DbFEJGvzHue/
+https://www.instagram.com/reel/DaC7-wPIggo/

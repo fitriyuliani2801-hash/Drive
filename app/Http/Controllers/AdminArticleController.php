@@ -238,6 +238,10 @@ class AdminArticleController extends Controller
             return redirect()->route('admin.articles.index')->with('info', 'Artikel dari link tersebut sudah pernah di-import.');
         }
 
+        if (!$parser->isSupportedPlatform($url)) {
+            return redirect()->back()->with('error', 'Hanya tautan dari Instagram, TikTok, YouTube, atau Facebook yang dapat diimpor.');
+        }
+
         $parsedData = $parser->parseUrl($url, null, $customComments);
 
         // Fetch a default category (e.g. Politik or the first category)

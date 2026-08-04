@@ -27,7 +27,7 @@
                 <a href="{{ route('articles.show', $primaryHeadline->slug) }}" class="group block relative bg-slate-950 rounded-md overflow-hidden shadow-xl border border-slate-200 hover:shadow-2xl transition-all duration-500">
                     <div class="relative h-[440px] w-full overflow-hidden bg-slate-900">
                         @if($primaryHeadline->image_path)
-                            <img src="{{ asset('storage/' . $primaryHeadline->image_path) }}" alt="{{ $primaryHeadline->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-90">
+                            <img src="{{ str_starts_with($primaryHeadline->image_path, 'http') ? $primaryHeadline->image_path : asset('storage/' . $primaryHeadline->image_path) }}" alt="{{ $primaryHeadline->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-90">
                         @else
                             <div class="w-full h-full bg-gradient-to-br from-slate-900 via-brand-950 to-slate-950 flex items-center justify-center p-8">
                                 <i class="ri-newspaper-line text-9xl text-white/20"></i>

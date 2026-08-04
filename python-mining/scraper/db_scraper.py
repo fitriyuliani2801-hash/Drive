@@ -90,14 +90,23 @@ def generate_fallback_comments(title):
             "Keamanan kota harus ditingkatkan lagi. Patroli malam tolong digiatkan agar warga tidak was-was.",
             "Ngeri denger berita kayak gini. Semoga hukum ditegakkan seadil-adilnya tanpa pandang bulu."
         ]
-    # Kategori Infrastruktur / Jalan / Pemkot / Proyek / Pengecoran
-    elif any(k in title_lower for k in ['jalan', 'rusak', 'lubang', 'infrastruktur', 'jembatan', 'pemerintah', 'pemkot', 'metro', 'perbaikan', 'aspal', 'proyek', 'pengecoran', 'pattimura']):
+    # Kategori Infrastruktur / Jalan / Proyek / Pengecoran
+    elif any(k in title_lower for k in ['jalan', 'rusak', 'lubang', 'infrastruktur', 'jembatan', 'perbaikan', 'aspal', 'proyek', 'pengecoran', 'pattimura']):
         comments = [
             "Aneh banget, jalannya kan masih bagus kenapa malah dicor lagi? Pemborosan anggaran ini namanya!",
             "Proyek asal-asalan lagi kah? Harusnya uangnya dialokasikan ke jalan rusak lain yang lebih membutuhkan.",
             "Warga berhak protes kalau begini caranya. Pembangunan harusnya berdasarkan skala prioritas.",
             "Semoga pemkot mendengar keluhan warga ini. Pengecoran jalan yang masih bagus itu aneh sekali.",
             "Tolong pihak DPRD Metro awasi proyek ini, jangan sampai ada indikasi kongkalikong anggaran."
+        ]
+    # Kategori Pendidikan / SDM / Pelatihan / Perhotelan / Tenaga Kerja
+    elif any(k in title_lower for k in ['sdm', 'pelatihan', 'perhotelan', 'migran', 'pendidikan', 'sekolah', 'kuliah', 'siswa', 'mahasiswa', 'kompeten', 'kerja']):
+        comments = [
+            "Bagus sekali program pelatihan seperti ini. Sangat membantu meningkatkan skill tenaga kerja lokal.",
+            "Semoga para peserta pelatihan bisa langsung diserap oleh industri perhotelan dan pariwisata.",
+            "Langkah cerdas untuk menyiapkan sdm unggul dari Metro agar siap bersaing secara global.",
+            "Program kelas migran ini bagus untuk memberikan perlindungan dan pembekalan resmi bagi calon pekerja.",
+            "Sukses terus untuk program pemberdayaan sdm Pemkot Metro. Sangat bermanfaat!"
         ]
     # Kategori Ekonomi / UMKM / Pasar
     elif any(k in title_lower for k in ['umkm', 'ekonomi', 'pasar', 'pedagang', 'kuliner', 'harga', 'wisata', 'belanja', 'omset']):
@@ -307,13 +316,9 @@ for art in articles:
     except Exception as e:
         print(f"[ERROR] Gagal melakukan scraping pada URL: {e}")
 
-    # 3. Jika tetap kosong (karena login wall/error pada sosmed), gunakan Fallback simulated comments
+    # 3. Jika tetap kosong (karena login wall/error pada sosmed), biarkan kosong sesuai permintaan user
     if not valid_comments:
-        print("-> Tidak ada komentar asli yang valid (terhambat login wall/cookie). Menggunakan simulasi komentar cerdas...")
-        simulated_texts = generate_fallback_comments(title)
-        for text in simulated_texts:
-            author = random.choice(indo_names)
-            valid_comments.append({"author": author, "text": text})
+        print("-> Tidak ada komentar asli pada postingan ini. Dikosongkan.")
         
     # Hapus komentar hasil scraping/simulasi lama untuk artikel ini agar diperbarui dengan yang baru
     try:
