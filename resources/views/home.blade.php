@@ -162,20 +162,10 @@
                         @if($art->image_path)
                             <div class="w-full sm:w-48 h-40 sm:h-36 rounded-md overflow-hidden bg-slate-100 shrink-0 border border-slate-200 relative">
                                 <img src="{{ str_starts_with($art->image_path, 'http') ? $art->image_path : asset('storage/' . $art->image_path) }}" alt="{{ $art->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                                <div class="absolute top-2 left-2">
-                                    <span class="px-2.5 py-0.5 rounded-md font-black text-white text-[10px] uppercase font-heading bg-crimson-700 shadow-xs">
-                                        {{ $art->category->name }}
-                                    </span>
-                                </div>
                             </div>
                         @else
                             <div class="w-full sm:w-48 h-40 sm:h-36 rounded-md bg-blue-50 flex items-center justify-center text-brand-400 shrink-0 relative border border-blue-100">
                                 <i class="ri-newspaper-line text-4xl"></i>
-                                <div class="absolute top-2 left-2">
-                                    <span class="px-2.5 py-0.5 rounded-md font-black text-white text-[10px] uppercase font-heading bg-crimson-700">
-                                        {{ $art->category->name }}
-                                    </span>
-                                </div>
                             </div>
                         @endif
 
@@ -247,9 +237,6 @@
                                 0{{ $rank + 1 }}
                             </span>
                             <div class="space-y-1 flex-1 min-w-0">
-                                <span class="px-2 py-0.5 rounded text-[10px] font-bold text-white uppercase font-heading bg-brand-600 inline-block">
-                                    {{ $pop->category->name }}
-                                </span>
                                 <h4 class="text-xs sm:text-sm font-bold text-slate-900 group-hover:text-crimson-700 transition-colors line-clamp-2 leading-snug font-heading">
                                     {{ $pop->title }}
                                 </h4>

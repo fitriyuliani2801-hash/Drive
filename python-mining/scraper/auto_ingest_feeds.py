@@ -37,6 +37,7 @@ options.add_argument("--no-sandbox")
 options.add_argument("--disable-dev-shm-usage")
 options.add_argument("--window-size=1920,1080")
 options.add_argument("--log-level=3")
+options.add_argument("--mute-audio") # Bisukan suara video yang di-scrape
 options.add_argument(f"user-data-dir={chrome_profile_path}")
 
 # Anti-bot detection flags
@@ -90,160 +91,37 @@ def save_article(url, platform, title, content, image_url, author):
         print(f"[ERROR] Gagal menyimpan artikel: {e}")
 
 # ==========================================
-# 1. AUTO-INGEST INSTAGRAM (infokotametrolampung)
+# 1. AUTO-INGEST MULTI-PLATFORM VIA APIFY
 # ==========================================
-print("\n[INSTAGRAM] Memindai berita viral Kota Metro...")
+from apify_client import scrape_instagram_feed, scrape_tiktok_feed, scrape_facebook_feed
+
+# 1. Ingest Instagram
+print("\n[INSTAGRAM] Memindai berita viral Kota Metro via Apify...")
 try:
-    ig_profile = "https://www.instagram.com/infokotametrolampung/"
-    driver.get(ig_profile)
-    time.sleep(6)
-    
-    # Kumpulkan tautan postingan spesifik (/p/ atau /reel/)
-    post_links = []
-    links = driver.find_elements(By.TAG_NAME, "a")
-    for link in links:
-        href = link.get_attribute("href")
-        if href and ("/p/" in href or "/reel/" in href) and "instagram.com" in href:
-            post_links.append(href)
-            
-    # Hapus duplikasi dan ambil 3 teratas (terbaru)
-    post_links = list(dict.fromkeys(post_links))[:3]
-    print(f"Ditemukan {len(post_links)} link postingan Instagram terbaru.")
-    
-    for url in post_links:
-        try:
-            # Cek duplikat sebelum membuka agar hemat waktu
-            cursor.execute("SELECT id FROM articles WHERE source_url = %s", (url,))
-            if cursor.fetchone():
-                continue
-                
-            driver.get(url)
-            time.sleep(5)
-            
-            title_text = driver.title
-            caption_match = re.search(r'Instagram: "(.*)"', title_text)
-            title = caption_match.group(1)[:150] if caption_match else "Postingan Viral Instagram Metro"
-            content = caption_match.group(1) if caption_match else f"Postingan terbaru dari rujukan link {url}"
-            
-            # Cari gambar utama
-            image_url = None
-            imgs = driver.find_elements(By.TAG_NAME, "img")
-            for img in imgs:
-                src = img.get_attribute("src")
-                if src and ("scontent" in src or "instagram" in src):
-                    width = img.size.get('width', 0)
-                    if width > 200:
-                        image_url = src
-                        break
-                        
-            save_article(url, "Instagram", title, content, image_url, "@infokotametrolampung")
-        except Exception as e:
-            print(f"[WARN] Gagal parse post Instagram {url}: {e}")
+    ig_posts = scrape_instagram_feed("infokotametrolampung", limit=3)
+    print(f"Ditemukan {len(ig_posts)} link postingan Instagram terbaru.")
+    for post in ig_posts:
+        save_article(post["url"], "Instagram", post["caption"][:150] or "Postingan Instagram Metro", post["caption"] or "Postingan terbaru dari Instagram", post["image_url"], post["author"])
 except Exception as e:
     print(f"[ERROR] Gagal memindai Instagram: {e}")
 
-# ==========================================
-# 2. AUTO-INGEST TIKTOK (@metro.terkini)
-# ==========================================
-print("\n[TIKTOK] Memindai video viral Kota Metro...")
+# 2. Ingest TikTok
+print("\n[TIKTOK] Memindai video viral Kota Metro via Apify...")
 try:
-    tiktok_profile = "https://www.tiktok.com/@metro.terkini"
-    driver.get(tiktok_profile)
-    time.sleep(6)
-    
-    video_links = []
-    links = driver.find_elements(By.TAG_NAME, "a")
-    for link in links:
-        href = link.get_attribute("href")
-        if href and "/video/" in href and "tiktok.com" in href:
-            video_links.append(href)
-            
-    video_links = list(dict.fromkeys(video_links))[:2]
-    print(f"Ditemukan {len(video_links)} link video TikTok terbaru.")
-    
-    for url in video_links:
-        try:
-            cursor.execute("SELECT id FROM articles WHERE source_url = %s", (url,))
-            if cursor.fetchone():
-                continue
-                
-            driver.get(url)
-            time.sleep(5)
-            
-            title = driver.title[:150] if driver.title else "Video Viral TikTok Metro"
-            content = driver.title if driver.title else f"Video terbaru di TikTok seputar Kota Metro: {url}"
-            
-            # Ambil poster/thumbnail
-            image_url = None
-            imgs = driver.find_elements(By.TAG_NAME, "img")
-            for img in imgs:
-                src = img.get_attribute("src")
-                if src and ("tiktokcdn" in src or "p16-sign" in src):
-                    image_url = src
-                    break
-                    
-            save_article(url, "TikTok", title, content, image_url, "@metro.terkini")
-        except Exception as e:
-            print(f"[WARN] Gagal parse video TikTok {url}: {e}")
+    tiktok_videos = scrape_tiktok_feed("metro.terkini", limit=3)
+    print(f"Ditemukan {len(tiktok_videos)} link video TikTok terbaru.")
+    for vid in tiktok_videos:
+        save_article(vid["url"], "TikTok", vid["caption"][:150] or "Video TikTok Metro", vid["caption"] or "Video terbaru dari TikTok", vid["image_url"], vid["author"])
 except Exception as e:
     print(f"[ERROR] Gagal memindai TikTok: {e}")
 
-# ==========================================
-# 3. AUTO-INGEST FACEBOOK (HumasPemkotMetro Posts)
-# ==========================================
-print("\n[FACEBOOK] Memindai postingan viral Kota Metro...")
+# 3. Ingest Facebook
+print("\n[FACEBOOK] Memindai postingan Humas Pemkot Metro via Apify...")
 try:
-    fb_profile = "https://www.facebook.com/HumasPemkotMetro"
-    driver.get(fb_profile)
-    time.sleep(6)
-    
-    post_links = []
-    # Kumpulkan tautan postingan Facebook spesifik (mengandung /posts/ atau /videos/ atau watch)
-    links = driver.find_elements(By.TAG_NAME, "a")
-    for link in links:
-        href = link.get_attribute("href")
-        if href and ("facebook.com" in href or "fb.watch" in href) and ("/posts/" in href or "/videos/" in href or "/watch/" in href):
-            # Bersihkan parameter url agar rapi
-            clean_url = href.split('?')[0]
-            post_links.append(clean_url)
-            
-    post_links = list(dict.fromkeys(post_links))[:2]
-    print(f"Ditemukan {len(post_links)} link postingan Facebook terbaru.")
-    
-    for url in post_links:
-        try:
-            cursor.execute("SELECT id FROM articles WHERE source_url = %s", (url,))
-            if cursor.fetchone():
-                continue
-                
-            driver.get(url)
-            time.sleep(5)
-            
-            # Ambil konten teks
-            title = "Postingan Humas Pemkot Metro"
-            content = "Informasi resmi pembangunan Kota Metro."
-            try:
-                text_el = driver.find_element(By.CSS_SELECTOR, "div[dir='auto']")
-                content = text_el.text.strip()
-                title = content[:150]
-            except:
-                if driver.title:
-                    title = driver.title[:150]
-                    content = driver.title
-            
-            image_url = None
-            imgs = driver.find_elements(By.TAG_NAME, "img")
-            for img in imgs:
-                src = img.get_attribute("src")
-                if src and ("fbcdn" in src or "facebook.com" in src):
-                    width = img.size.get('width', 0)
-                    if width > 200:
-                        image_url = src
-                        break
-                        
-            save_article(url, "Facebook", title, content, image_url, "Humas Pemkot Metro")
-        except Exception as e:
-            print(f"[WARN] Gagal parse post Facebook {url}: {e}")
+    fb_posts = scrape_facebook_feed("HumasPemkotMetro", limit=3)
+    print(f"Ditemukan {len(fb_posts)} link postingan Facebook terbaru.")
+    for post in fb_posts:
+        save_article(post["url"], "Facebook", post["caption"][:150] or "Postingan Facebook Metro", post["caption"] or "Postingan terbaru dari Facebook", post["image_url"], post["author"])
 except Exception as e:
     print(f"[ERROR] Gagal memindai Facebook: {e}")
 

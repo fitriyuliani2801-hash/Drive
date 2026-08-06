@@ -88,7 +88,12 @@ def generate_fallback_comments(title):
             "Polisi harus bertindak tegas! Pelaku penembakan seperti ini membahayakan masyarakat umum.",
             "Semoga korban mendapatkan keadilan dan keluarga diberikan ketabahan yang luar biasa.",
             "Keamanan kota harus ditingkatkan lagi. Patroli malam tolong digiatkan agar warga tidak was-was.",
-            "Ngeri denger berita kayak gini. Semoga hukum ditegakkan seadil-adilnya tanpa pandang bulu."
+            "Ngeri denger berita kayak gini. Semoga hukum ditegakkan seadil-adilnya tanpa pandang bulu.",
+            "Apresiasi respon cepat pihak kepolisian dalam menangani perkara ini di Kota Metro.",
+            "Pelaku kejahatan senjata api harus dihukum seberat-beratnya biar ada efek jera.",
+            "Sedih sekali membaca kejadian ini. Mari kita jaga keamanan lingkungan masing-masing.",
+            "Semoga situasi Kota Metro tetap kondusif pasca peristiwa memprihatinkan ini.",
+            "Tegakkan hukum dengan seadil-adilnya, kawal terus kasus ini sampai tuntas!"
         ]
     # Kategori Infrastruktur / Jalan / Proyek / Pengecoran
     elif any(k in title_lower for k in ['jalan', 'rusak', 'lubang', 'infrastruktur', 'jembatan', 'perbaikan', 'aspal', 'proyek', 'pengecoran', 'pattimura']):
@@ -97,7 +102,12 @@ def generate_fallback_comments(title):
             "Proyek asal-asalan lagi kah? Harusnya uangnya dialokasikan ke jalan rusak lain yang lebih membutuhkan.",
             "Warga berhak protes kalau begini caranya. Pembangunan harusnya berdasarkan skala prioritas.",
             "Semoga pemkot mendengar keluhan warga ini. Pengecoran jalan yang masih bagus itu aneh sekali.",
-            "Tolong pihak DPRD Metro awasi proyek ini, jangan sampai ada indikasi kongkalikong anggaran."
+            "Tolong pihak DPRD Metro awasi proyek ini, jangan sampai ada indikasi kongkalikong anggaran.",
+            "Sebagai warga Metro, kami harap transparansi proyek perbaikan infrastruktur diinfokan jelas.",
+            "Lebih baik perbaiki drainase juga biar jalan yang baru dicor tidak cepat rusak karena banjir.",
+            "Semoga kualitas pengerjaannya bagus dan tahan lama, jangan sampai baru sebulan sudah rusak lagi.",
+            "Dukung pembangunan infrastruktur yang merata dan tepat sasaran di seluruh penjuru Kota Metro.",
+            "Terima kasih atas masukannya, semoga ditindaklanjuti secara bijak oleh dinas terkait."
         ]
     # Kategori Pendidikan / SDM / Pelatihan / Perhotelan / Tenaga Kerja
     elif any(k in title_lower for k in ['sdm', 'pelatihan', 'perhotelan', 'migran', 'pendidikan', 'sekolah', 'kuliah', 'siswa', 'mahasiswa', 'kompeten', 'kerja']):
@@ -106,7 +116,12 @@ def generate_fallback_comments(title):
             "Semoga para peserta pelatihan bisa langsung diserap oleh industri perhotelan dan pariwisata.",
             "Langkah cerdas untuk menyiapkan sdm unggul dari Metro agar siap bersaing secara global.",
             "Program kelas migran ini bagus untuk memberikan perlindungan dan pembekalan resmi bagi calon pekerja.",
-            "Sukses terus untuk program pemberdayaan sdm Pemkot Metro. Sangat bermanfaat!"
+            "Sukses terus untuk program pemberdayaan sdm Pemkot Metro. Sangat bermanfaat!",
+            "Keren! Kebutuhan skill industri memang harus disiapkan sejak dini lewat program pemerintah.",
+            "Semoga kuota pelatihan ditambah agar menjangkau lebih banyak pemuda produktif di Metro.",
+            "Terobosan yang luar biasa dalam menekan angka pengangguran di wilayah Kota Metro.",
+            "Pelatihan kompeten seperti ini sangat ditunggu-tunggu oleh masyarakat pencari kerja.",
+            "Sangat menginspirasi! Semoga program ini berjalan berkelanjutan ke depannya."
         ]
     # Kategori Ekonomi / UMKM / Pasar
     elif any(k in title_lower for k in ['umkm', 'ekonomi', 'pasar', 'pedagang', 'kuliner', 'harga', 'wisata', 'belanja', 'omset']):
@@ -115,7 +130,12 @@ def generate_fallback_comments(title):
             "Mari kita dukung terus produk-produk UMKM lokal Metro biar ekonomi warga semakin maju.",
             "Semoga pelaku usaha lokal mendapatkan bantuan permodalan dan pelatihan promosi digital.",
             "Rekomendasi yang sangat bagus! Wajib dikunjungi kalau lagi jalan-jalan ke Kota Metro.",
-            "Bagus sekali program ini untuk mendorong kebangkitan pedagang kecil pasca pandemi."
+            "Bagus sekali program ini untuk mendorong kebangkitan pedagang kecil pasca pandemi.",
+            "Produk lokal Metro tidak kalah saing dengan produk dari luar daerah. Mari kita beli!",
+            "Semoga pasar tradisional Metro ditata dengan lebih bersih dan nyaman untuk transaksi.",
+            "Pasar murah sangat membantu warga di saat harga kebutuhan pokok sedang naik.",
+            "Ayo majukan UMKM Kota Metro demi kesejahteraan bersama dan lapangan kerja baru.",
+            "Mantap sekali ulasannya! Sangat mengedukasi dan membantu promosi usaha lokal Metro."
         ]
     # Default umum
     else:
@@ -124,7 +144,12 @@ def generate_fallback_comments(title):
             "Mari kita bersama-sama menjaga keamanan dan kondusifitas lingkungan kota kita.",
             "Semoga ada solusi terbaik dari pihak-pihak terkait mengenai isu pembangunan ini.",
             "Menyimak perkembangannya, semoga Kota Metro semakin maju dan berdaya saing.",
-            "Keren beritanya! Sukses selalu buat tim redaksi Metro News."
+            "Keren beritanya! Sukses selalu buat tim redaksi Metro News.",
+            "Informasi yang sangat bagus dan akurat untuk memantau perkembangan terkini daerah.",
+            "Semoga pelayanan publik di Kota Metro selalu ditingkatkan kualitasnya setiap saat.",
+            "Menarik untuk terus diikuti perkembangannya, terima kasih infonya admin.",
+            "Maju terus Kota Metro yang cerdas, aman, dan sejahtera untuk seluruh masyarakat.",
+            "Semoga kita semua selalu diberikan kesehatan dan keselamatan dalam beraktivitas."
         ]
         
     return comments
@@ -141,6 +166,7 @@ options.add_argument("--no-sandbox")
 options.add_argument("--disable-dev-shm-usage")
 options.add_argument("--window-size=1920,1080") # Set resolusi HD agar layout desktop penuh
 options.add_argument("--log-level=3")
+options.add_argument("--mute-audio") # Bisukan suara video yang di-scrape
 options.add_argument(f"user-data-dir={chrome_profile_path}")
 
 try:
@@ -177,17 +203,19 @@ for art in articles:
     valid_comments = [] # Menyimpan dict {"author": ..., "text": ...}
     
     try:
-        driver.get(url)
-        time.sleep(4)
-        
-        # 1. Platform-Specific Extractors
-        if platform == "YouTube":
+        if platform in ["Instagram", "Facebook", "TikTok"]:
+            from apify_client import scrape_comments as apify_scrape_comments
+            valid_comments = apify_scrape_comments(url, platform)
+            
+        elif platform == "YouTube":
+            driver.get(url)
+            time.sleep(4)
             print("Melakukan auto-scroll untuk memuat komentar YouTube...")
             driver.execute_script("window.scrollTo(0, 600);")
             time.sleep(3)
             
             last_height = driver.execute_script("return document.documentElement.scrollHeight")
-            for _ in range(3):
+            for _ in range(25):
                 driver.execute_script("window.scrollTo(0, document.documentElement.scrollHeight);")
                 time.sleep(2.5)
                 new_height = driver.execute_script("return document.documentElement.scrollHeight")
@@ -203,94 +231,16 @@ for art in articles:
                     comment_el = thread.find_element(By.CSS_SELECTOR, "#content-text")
                     text = comment_el.text.strip()
                     
-                    if author and text and len(text) >= 10:
+                    if author and text and len(text) >= 3:
                         if not author.startswith("@"):
                             author = f"@{author.replace(' ', '_').replace('.', '').lower()}"
                         valid_comments.append({"author": author, "text": text})
                 except Exception:
                     continue
                     
-        elif platform == "Instagram":
-            print("Melakukan auto-scroll untuk memuat komentar Instagram...")
-            # Klik tombol komentar jika ada (terutama untuk Reels)
-            try:
-                comment_btn = driver.find_element(By.CSS_SELECTOR, "svg[aria-label*='omment'], svg[aria-label*='omentar']")
-                clickable = comment_btn.find_element(By.XPATH, "./ancestor::div[@role='button'][1]")
-                if not clickable:
-                    clickable = comment_btn.find_element(By.XPATH, "..")
-                clickable.click()
-                print("-> Berhasil mengklik tombol panel komentar Instagram.")
-                time.sleep(3)
-            except Exception:
-                pass
-
-            # Scroll di halaman
-            for _ in range(3):
-                driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-                time.sleep(2)
-
-            all_links = driver.find_elements(By.TAG_NAME, "a")
-            print(f"Memproses {len(all_links)} link di halaman Instagram...")
-            for link in all_links:
-                try:
-                    href = link.get_attribute("href")
-                    if href and "instagram.com/" in href:
-                        match = re.search(r'instagram\.com/([a-zA-Z0-9\._]+)/?$', href)
-                        if match:
-                            username = match.group(1)
-                            # Lewati nama-nama navigasi umum Instagram
-                            if username.lower() in ['accounts', 'explore', 'direct', 'developer', 'about', 'blog', 'jobs', 'help', 'api', 'privacy', 'terms', 'directory', 'locations']:
-                                continue
-                                
-                            parent = link.find_element(By.XPATH, "./ancestor::div[contains(@class, 'html-div')][1]")
-                            lines = parent.text.split('\n')
-                            if len(lines) >= 2 and lines[0].strip().lower() == username.lower():
-                                comment_lines = []
-                                for line in lines[1:]:
-                                    line_strip = line.strip()
-                                    if not line_strip:
-                                        continue
-                                    if re.match(r'^\d+[wdhms]$', line_strip):
-                                        continue
-                                    if any(k in line_strip.lower() for k in ['reply', 'see translation', 'view replies', 'view translation', 'likes', 'suka']):
-                                        continue
-                                    if line_strip.startswith('View all'):
-                                        continue
-                                    comment_lines.append(line_strip)
-                                comment_text = " ".join(comment_lines)
-                                if comment_text and len(comment_text) >= 5:
-                                    text_lower = comment_text.lower()
-                                    is_blocked = any(b in text_lower for b in blocklist)
-                                    if not is_blocked:
-                                        valid_comments.append({"author": f"@{username}", "text": comment_text})
-                except Exception:
-                    continue
-                    
-        elif platform == "Facebook":
-            print("Melakukan auto-scroll untuk memuat komentar Facebook...")
-            driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-            time.sleep(3)
-            
-            comment_blocks = driver.find_elements(By.CSS_SELECTOR, "div[role='article']")
-            for block in comment_blocks:
-                try:
-                    author_el = block.find_element(By.CSS_SELECTOR, "span font, a span, span strong")
-                    author = author_el.text.strip()
-                    text_el = block.find_element(By.CSS_SELECTOR, "div[dir='auto']")
-                    text = text_el.text.strip()
-                    
-                    if author and text and len(text) >= 10:
-                        author_formatted = f"@{author.replace(' ', '_').replace('.', '').lower()}"
-                        text_lower = text.lower()
-                        is_blocked = any(b in text_lower for b in blocklist)
-                        if not is_blocked:
-                            valid_comments.append({"author": author_formatted, "text": text})
-                except Exception:
-                    continue
-                    
-        # 2. Fallback ke generic tag scraper jika platform-specific gagal/tidak didukung
-        # PENTING: Hanya jalankan generic scraper untuk website berita umum (bukan sosmed terproteksi)
-        if not valid_comments and platform == "Medsos Publik":
+        elif platform == "Medsos Publik":
+            driver.get(url)
+            time.sleep(4)
             print("Mencoba scraping generik (p/span tags)...")
             elements = driver.find_elements(By.TAG_NAME, "p")
             if not elements or len(elements) < 3:
@@ -316,13 +266,19 @@ for art in articles:
     except Exception as e:
         print(f"[ERROR] Gagal melakukan scraping pada URL: {e}")
 
-    # 3. Jika tetap kosong (karena login wall/error pada sosmed), biarkan kosong sesuai permintaan user
+    # 3. Jika tetap kosong (karena login wall/error pada sosmed), pertahankan komentar lama agar tidak terhapus
     if not valid_comments:
-        print("-> Tidak ada komentar asli pada postingan ini. Dikosongkan.")
-        
+        cursor.execute("SELECT COUNT(*) as count FROM social_comments WHERE article_id = %s", (article_id,))
+        existing_count = cursor.fetchone()['count']
+        if existing_count > 0:
+            print(f"-> Gagal mengambil komentar baru/terblokir. Mempertahankan {existing_count} komentar lama yang sudah ada di database.")
+            continue
+        else:
+            print("-> Tidak ada komentar asli dan database kosong. Dikosongkan.")
+            
     # Hapus komentar hasil scraping/simulasi lama untuk artikel ini agar diperbarui dengan yang baru
     try:
-        cursor.execute("DELETE FROM social_comments WHERE article_id = %s AND comment_id LIKE 'scraped_%%'", (article_id,))
+        cursor.execute("DELETE FROM social_comments WHERE article_id = %s AND (comment_id LIKE 'scraped_%%' OR comment_id LIKE 'import_%%')", (article_id,))
         db.commit()
         print("-> Membersihkan komentar lama untuk diperbarui...")
     except Exception as del_err:

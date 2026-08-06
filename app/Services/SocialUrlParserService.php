@@ -294,7 +294,7 @@ class SocialUrlParserService
         }
 
         if (empty($rawComments)) {
-            $rawComments = $this->buildContextualComments($finalTitle, $finalContent, $platform);
+            $rawComments = []; // Dikosongkan sesuai permintaan user
         }
 
         $mediaImages = $this->buildMediaImages($finalTitle, $finalContent, $scrapedImage);
