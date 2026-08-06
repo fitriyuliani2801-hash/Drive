@@ -193,10 +193,10 @@
 
                             <div class="flex items-center justify-between pt-2 border-t border-slate-100 text-xs">
                                 <div class="flex items-center gap-2 text-[11px]">
-                                    <span class="px-2 py-0.5 rounded bg-blue-100 text-brand-800 font-extrabold" title="Respon Positif">
+                                    <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-extrabold" title="Respon Positif">
                                         👍 {{ $art->positive_count }}
                                     </span>
-                                    <span class="px-2 py-0.5 rounded bg-slate-200 text-slate-700 font-extrabold" title="Respon Negatif">
+                                    <span class="px-2 py-0.5 rounded bg-rose-100 text-rose-800 font-extrabold" title="Respon Negatif">
                                         👎 {{ $art->negative_count }}
                                     </span>
                                 </div>

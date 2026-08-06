@@ -91,14 +91,162 @@ def save_article(url, platform, title, content, image_url, author):
         print(f"[ERROR] Gagal menyimpan artikel: {e}")
 
 # ==========================================
-# 1. AUTO-INGEST MULTI-PLATFORM VIA APIFY
+# 1. LOCAL SELENIUM FALLBACK SCRAPER (Bebas Blokir via Sesi Login Laptop)
+# ==========================================
+def scrape_instagram_feed_selenium(username, limit=3):
+    posts = []
+    try:
+        url = f"https://www.instagram.com/{username}/"
+        driver.get(url)
+        time.sleep(7)
+        
+        # Cek apakah terlempar ke halaman login
+        if "login" in driver.current_url.lower():
+            print("[WARN] Sesi login Instagram kosong/kedaluwarsa. Silakan jalankan 'py python-mining/scraper/login_helper.py'.")
+            return []
+            
+        links = driver.find_elements(By.TAG_NAME, "a")
+        post_urls = []
+        for link in links:
+            href = link.get_attribute("href")
+            if href:
+                # Bersihkan query string agar mudah dianalisis
+                clean_href = href.split("?")[0].rstrip("/")
+                
+                # Validasi format Instagram: /p/ID atau /reel/ID atau /tv/ID
+                match = re.search(r'/(p|reel|tv)/([a-zA-Z0-9_-]+)', clean_href)
+                if match:
+                    post_id = match.group(2)
+                    if post_id in ["reels", "explore", "direct", "stories"]:
+                        continue
+                    full_post_url = f"https://www.instagram.com/{match.group(1)}/{post_id}/"
+                    if full_post_url not in post_urls:
+                        post_urls.append(full_post_url)
+                        if len(post_urls) >= limit:
+                            break
+                        
+        for u in post_urls:
+            driver.get(u)
+            time.sleep(4)
+            
+            caption = ""
+            try:
+                meta_desc = driver.find_element(By.XPATH, "//meta[@name='description']").get_attribute("content")
+                if meta_desc:
+                    caption = meta_desc
+            except:
+                pass
+                
+            image_url = ""
+            try:
+                img_els = driver.find_elements(By.TAG_NAME, "img")
+                for img in img_els:
+                    src = img.get_attribute("src")
+                    if src and "https://instagram." in src:
+                        image_url = src
+                        break
+            except:
+                pass
+                
+            posts.append({
+                "url": u,
+                "caption": caption or "Postingan Instagram Metro",
+                "image_url": image_url,
+                "author": f"@{username}"
+            })
+        driver.get("about:blank")
+    except Exception as e:
+        print(f"[Selenium Instagram Error] {e}")
+    return posts
+
+def scrape_facebook_feed_selenium(page_name, limit=3):
+    posts = []
+    try:
+        url = f"https://www.facebook.com/{page_name}/"
+        driver.get(url)
+        time.sleep(7)
+        
+        if "login" in driver.current_url.lower():
+            print("[WARN] Sesi login Facebook kosong/kedaluwarsa. Silakan jalankan 'py python-mining/scraper/login_helper.py'.")
+            return []
+            
+        links = driver.find_elements(By.TAG_NAME, "a")
+        post_urls = []
+        for link in links:
+            href = link.get_attribute("href")
+            if href:
+                # Filter agar tidak memasukkan navigasi umum
+                if any(p in href.lower() for p in ["/about", "/photos_by", "/groups", "/events"]) or href.rstrip("/").endswith(page_name.lower()):
+                    continue
+                    
+                # Validasi format Facebook
+                has_valid_id = False
+                match = re.search(r'/(posts|videos|reel|share/r)/([0-9a-zA-Z_-]+)', href)
+                if match:
+                    post_id = match.group(2)
+                    if post_id and post_id not in ["watch", "reels", "tab", "videos", "live"]:
+                        has_valid_id = True
+                
+                if "fbid=" in href or "story_fbid=" in href:
+                    has_valid_id = True
+                    
+                if has_valid_id:
+                    clean_url = href
+                    if not ("fbid=" in href or "story_fbid=" in href):
+                        clean_url = href.split("?")[0].rstrip("/") + "/"
+                        
+                    if clean_url not in post_urls:
+                        post_urls.append(clean_url)
+                        if len(post_urls) >= limit:
+                            break
+                        
+        for u in post_urls:
+            driver.get(u)
+            time.sleep(4)
+            
+            caption = ""
+            try:
+                meta_desc = driver.find_element(By.XPATH, "//meta[@name='description']").get_attribute("content")
+                if meta_desc:
+                    caption = meta_desc
+            except:
+                pass
+                
+            image_url = ""
+            try:
+                img_els = driver.find_elements(By.TAG_NAME, "img")
+                for img in img_els:
+                    src = img.get_attribute("src")
+                    if src and "https://scontent" in src:
+                        image_url = src
+                        break
+            except:
+                pass
+                
+            posts.append({
+                "url": u,
+                "caption": caption or "Postingan Facebook Metro",
+                "image_url": image_url,
+                "author": page_name
+            })
+        driver.get("about:blank")
+    except Exception as e:
+        print(f"[Selenium Facebook Error] {e}")
+    return posts
+
+# ==========================================
+# 2. AUTO-INGEST MULTI-PLATFORM RUNNER
 # ==========================================
 from apify_client import scrape_instagram_feed, scrape_tiktok_feed, scrape_facebook_feed
 
 # 1. Ingest Instagram
-print("\n[INSTAGRAM] Memindai berita viral Kota Metro via Apify...")
+print("\n[INSTAGRAM] Memindai berita viral Kota Metro...")
 try:
     ig_posts = scrape_instagram_feed("infokotametrolampung", limit=3)
+    if not ig_posts:
+        print("-> Apify diblokir/gagal. Menggunakan fallback Selenium lokal...")
+        ig_posts = scrape_instagram_feed_selenium("infokotametrolampung", limit=3)
+        
     print(f"Ditemukan {len(ig_posts)} link postingan Instagram terbaru.")
     for post in ig_posts:
         save_article(post["url"], "Instagram", post["caption"][:150] or "Postingan Instagram Metro", post["caption"] or "Postingan terbaru dari Instagram", post["image_url"], post["author"])
@@ -106,7 +254,7 @@ except Exception as e:
     print(f"[ERROR] Gagal memindai Instagram: {e}")
 
 # 2. Ingest TikTok
-print("\n[TIKTOK] Memindai video viral Kota Metro via Apify...")
+print("\n[TIKTOK] Memindai video viral Kota Metro...")
 try:
     tiktok_videos = scrape_tiktok_feed("metro.terkini", limit=3)
     print(f"Ditemukan {len(tiktok_videos)} link video TikTok terbaru.")
@@ -116,9 +264,13 @@ except Exception as e:
     print(f"[ERROR] Gagal memindai TikTok: {e}")
 
 # 3. Ingest Facebook
-print("\n[FACEBOOK] Memindai postingan Humas Pemkot Metro via Apify...")
+print("\n[FACEBOOK] Memindai postingan Humas Pemkot Metro...")
 try:
     fb_posts = scrape_facebook_feed("HumasPemkotMetro", limit=3)
+    if not fb_posts:
+        print("-> Apify diblokir/gagal. Menggunakan fallback Selenium lokal...")
+        fb_posts = scrape_facebook_feed_selenium("HumasPemkotMetro", limit=3)
+        
     print(f"Ditemukan {len(fb_posts)} link postingan Facebook terbaru.")
     for post in fb_posts:
         save_article(post["url"], "Facebook", post["caption"][:150] or "Postingan Facebook Metro", post["caption"] or "Postingan terbaru dari Facebook", post["image_url"], post["author"])

@@ -3,7 +3,7 @@
 @section('title', $article->title . ' - METROLOGI NEWS')
 
 @section('content')
-<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
     
     <!-- Back Navigation Link -->
     <div>
@@ -12,8 +12,13 @@
         </a>
     </div>
 
-    <!-- MAIN ARTICLE READING CARD (GAYA DETIK & KOMPAS) -->
-    <div class="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-sm space-y-6 relative overflow-hidden">
+    <!-- 2-COLUMN GRID WRAPPER (ARTICLE LEFT, COMMENTS RIGHT) -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- LEFT COLUMN: MAIN ARTICLE (7 COLS) -->
+        <div class="lg:col-span-7 space-y-6">
+            <!-- MAIN ARTICLE READING CARD (GAYA DETIK & KOMPAS) -->
+            <div class="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-sm space-y-6 relative overflow-hidden">
         
         <!-- Badges & Category Bar -->
         <div class="flex flex-wrap items-center justify-between gap-3 relative z-10">
@@ -123,6 +128,45 @@
             </div>
         @endif
 
+        <!-- VERDICT & TRUTH ANALYSIS CARD -->
+        @if($article->verdict)
+            @if($article->verdict === 'asli')
+                <div class="p-6 rounded-3xl bg-emerald-50 border border-emerald-200 text-emerald-950 space-y-3 shadow-xs">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-2xl bg-emerald-600 text-white flex items-center justify-center font-bold text-lg shadow-sm">
+                            <i class="ri-checkbox-circle-line"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-xs font-black uppercase tracking-wider font-heading text-emerald-800">Hasil Verifikasi Keaslian Berita</h4>
+                            <span class="text-base font-extrabold text-emerald-900 font-heading">BERITA ASLI (FAKTA) &bull; Skor Kepercayaan: {{ number_format($article->verdict_score) }}%</span>
+                        </div>
+                    </div>
+                    @if($article->verdict_reasoning)
+                        <p class="text-xs sm:text-sm text-emerald-800 leading-relaxed pl-13 font-medium">
+                            <strong class="text-emerald-950 font-bold">Catatan Analis AI:</strong> {{ $article->verdict_reasoning }}
+                        </p>
+                    @endif
+                </div>
+            @elseif($article->verdict === 'hoaks')
+                <div class="p-6 rounded-3xl bg-rose-50 border border-rose-200 text-rose-950 space-y-3 shadow-xs">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-2xl bg-rose-600 text-white flex items-center justify-center font-bold text-lg shadow-sm animate-pulse">
+                            <i class="ri-close-circle-line"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-xs font-black uppercase tracking-wider font-heading text-rose-800">Hasil Verifikasi Keaslian Berita</h4>
+                            <span class="text-base font-extrabold text-rose-900 font-heading">BERITA HOAKS (DISINFORMASI) &bull; Skor Kebenaran: {{ number_format($article->verdict_score) }}%</span>
+                        </div>
+                    </div>
+                    @if($article->verdict_reasoning)
+                        <p class="text-xs sm:text-sm text-rose-800 leading-relaxed pl-13 font-medium">
+                            <strong class="text-rose-950 font-bold">Catatan Analis AI:</strong> {{ $article->verdict_reasoning }}
+                        </p>
+                    @endif
+                </div>
+            @endif
+        @endif
+
         <!-- Article Body Content with 3 Photos (Foto Pertengahan & Foto Akhiran) -->
         @php
             $paras = array_values(array_filter(explode("\n", $article->content), fn($p) => trim($p) !== ''));
@@ -170,51 +214,78 @@
         </div>
 
     </div>
+    </div> <!-- END OF LEFT COLUMN -->
 
-    <!-- PUBLIC SENTIMENT & COMMENTS SECTION -->
-    <div id="comments-section" class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-8">
+    <!-- RIGHT COLUMN: SENTIMENT & COMMENTS SECTION (5 COLS) -->
+    <div class="lg:col-span-5 space-y-6">
+        <!-- PUBLIC SENTIMENT & COMMENTS SECTION -->
+        <div id="comments-section" class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-8">
         
         <!-- Section Header -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-5">
+        <div class="flex flex-col gap-4 border-b border-slate-200 pb-5">
             <div>
-                <h3 class="text-2xl font-black text-slate-900 flex items-center gap-2 font-heading">
-                    <i class="ri-chat-smile-2-line text-crimson-600"></i> Tanggapan &amp; Komentar Netizen Media Sosial
+                <h3 class="text-xl sm:text-2xl font-black text-slate-900 flex items-center gap-2 font-heading leading-tight">
+                    <i class="ri-chat-smile-2-line text-crimson-600"></i> Tanggapan &amp; Komentar Netizen
                 </h3>
-                <p class="text-xs text-slate-500 mt-1">Komentar publik &amp; reaksi netizen (Instagram, X, Facebook, YouTube) yang telah dikurasi via Ingestion &amp; Filtering Algorithm.</p>
+                <p class="text-[11px] sm:text-xs text-slate-500 mt-1">Komentar publik &amp; reaksi netizen (Instagram, X, Facebook, YouTube) yang telah dikurasi via Ingestion &amp; Filtering Algorithm.</p>
             </div>
 
             <!-- Sentiment Filter Tabs -->
-            <div class="flex items-center gap-1 bg-slate-100 p-1.5 rounded-2xl border border-slate-200 text-xs font-bold font-heading self-start">
+            <div class="flex flex-wrap items-center gap-1 bg-slate-100 p-1.5 rounded-2xl border border-slate-200 text-xs font-bold font-heading self-start">
                 <a href="{{ route('articles.show', $article->slug) }}#comments-section" class="px-3 py-1.5 rounded-xl transition-all {{ !request('sentiment') ? 'bg-crimson-700 text-white shadow-xs font-extrabold' : 'text-slate-600 hover:text-crimson-700' }}">
                     Semua ({{ $article->positive_count + $article->negative_count + $article->neutral_count }})
                 </a>
-                <a href="{{ route('articles.show', [$article->slug, 'sentiment' => 'positif']) }}#comments-section" class="px-3 py-1.5 rounded-xl transition-all {{ request('sentiment') == 'positif' ? 'bg-brand-600 text-white shadow-xs' : 'text-brand-700 hover:bg-blue-100' }}">
+                <a href="{{ route('articles.show', [$article->slug, 'sentiment' => 'positif']) }}#comments-section" class="px-3 py-1.5 rounded-xl transition-all {{ request('sentiment') == 'positif' ? 'bg-emerald-600 text-white shadow-xs' : 'text-emerald-700 hover:bg-emerald-50' }}">
                     <i class="ri-thumb-up-line"></i> Positif ({{ $article->positive_count }})
                 </a>
-                <a href="{{ route('articles.show', [$article->slug, 'sentiment' => 'negatif']) }}#comments-section" class="px-3 py-1.5 rounded-xl transition-all {{ request('sentiment') == 'negatif' ? 'bg-slate-900 text-white shadow-xs' : 'text-slate-700 hover:bg-slate-200' }}">
+                <a href="{{ route('articles.show', [$article->slug, 'sentiment' => 'negatif']) }}#comments-section" class="px-3 py-1.5 rounded-xl transition-all {{ request('sentiment') == 'negatif' ? 'bg-rose-600 text-white shadow-xs' : 'text-rose-700 hover:bg-rose-50' }}">
                     <i class="ri-thumb-down-line"></i> Negatif ({{ $article->negative_count }})
                 </a>
             </div>
         </div>
 
-        <!-- Sentiment Summary Metric Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div class="p-4 rounded-2xl bg-blue-50 border border-blue-200 text-brand-950 space-y-1">
-                <span class="text-[10px] font-black uppercase tracking-wider block text-brand-800 font-heading"><i class="ri-thumb-up-fill text-brand-600"></i> Respon Positif</span>
-                <span class="text-3xl font-black block font-heading text-brand-700">{{ number_format($article->positive_count) }} Komentar</span>
-                <span class="text-[11px] text-brand-600 font-medium">Dukungan &amp; Apresiasi Netizen</span>
+        <!-- Sentiment Summary Metric Cards (Vertical Stack for Neatness in Column layout) -->
+        <div class="flex flex-col gap-3">
+            <!-- Positif -->
+            <div class="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-between text-emerald-950 gap-4">
+                <div class="flex items-center gap-3 min-w-0">
+                    <div class="w-9 h-9 rounded-xl bg-emerald-600/10 text-emerald-600 flex items-center justify-center shrink-0">
+                        <i class="ri-thumb-up-fill text-lg"></i>
+                    </div>
+                    <div class="min-w-0">
+                        <span class="text-[10px] font-black uppercase tracking-wider block text-emerald-800 font-heading">Respon Positif</span>
+                        <span class="text-[11px] text-emerald-600 font-medium truncate block">Dukungan &amp; Apresiasi Netizen</span>
+                    </div>
+                </div>
+                <span class="text-base sm:text-lg font-black font-heading text-emerald-700 shrink-0 whitespace-nowrap">{{ number_format($article->positive_count) }} Komentar</span>
             </div>
 
-            <div class="p-4 rounded-2xl bg-slate-100 border border-slate-300 text-slate-900 space-y-1">
-                <span class="text-[10px] font-black uppercase tracking-wider block text-slate-700 font-heading"><i class="ri-thumb-down-fill text-slate-500"></i> Respon Negatif</span>
-                <span class="text-3xl font-black block font-heading text-slate-800">{{ number_format($article->negative_count) }} Komentar</span>
-                <span class="text-[11px] text-slate-600 font-medium">Kritikan &amp; Keluhan Netizen</span>
+            <!-- Negatif -->
+            <div class="p-3.5 rounded-2xl bg-rose-50 border border-rose-200 flex items-center justify-between text-rose-950 gap-4">
+                <div class="flex items-center gap-3 min-w-0">
+                    <div class="w-9 h-9 rounded-xl bg-rose-600/10 text-rose-600 flex items-center justify-center shrink-0">
+                        <i class="ri-thumb-down-fill text-lg"></i>
+                    </div>
+                    <div class="min-w-0">
+                        <span class="text-[10px] font-black uppercase tracking-wider block text-rose-800 font-heading">Respon Negatif</span>
+                        <span class="text-[11px] text-rose-600/70 font-medium truncate block">Kritikan &amp; Keluhan Netizen</span>
+                    </div>
+                </div>
+                <span class="text-base sm:text-lg font-black font-heading text-rose-700 shrink-0 whitespace-nowrap">{{ number_format($article->negative_count) }} Komentar</span>
             </div>
 
-            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 space-y-1">
-                <span class="text-[10px] font-black uppercase tracking-wider block text-slate-600 font-heading"><i class="ri-chat-neutral-fill text-slate-400"></i> Komentar Netral</span>
-                <span class="text-3xl font-black block font-heading text-slate-800">{{ number_format($article->neutral_count) }} Komentar</span>
-                <span class="text-[11px] text-slate-500 font-medium">Pernyataan Umum &amp; Pertanyaan</span>
+            <!-- Netral -->
+            <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between text-slate-900 gap-4">
+                <div class="flex items-center gap-3 min-w-0">
+                    <div class="w-9 h-9 rounded-xl bg-slate-200 text-slate-500 flex items-center justify-center shrink-0">
+                        <i class="ri-chat-neutral-fill text-lg"></i>
+                    </div>
+                    <div class="min-w-0">
+                        <span class="text-[10px] font-black uppercase tracking-wider block text-slate-600 font-heading">Komentar Netral</span>
+                        <span class="text-[11px] text-slate-500 font-medium truncate block">Pernyataan Umum &amp; Pertanyaan</span>
+                    </div>
+                </div>
+                <span class="text-base sm:text-lg font-black font-heading text-slate-800 shrink-0 whitespace-nowrap">{{ number_format($article->neutral_count) }} Komentar</span>
             </div>
         </div>
 
@@ -371,16 +442,16 @@
 
                         <!-- Sentiment AI Badge -->
                         @if($c->sentiment === 'positif')
-                            <span class="px-3 py-1 rounded-full font-black text-[10px] uppercase bg-blue-100 text-brand-800 border border-blue-300 flex items-center gap-1 font-heading">
-                                <i class="ri-thumb-up-fill text-brand-600"></i> Sentimen Positif
+                            <span class="px-3 py-1 rounded-full font-black text-[10px] uppercase bg-emerald-100 text-emerald-800 border border-emerald-300 flex items-center gap-1 font-heading">
+                                <i class="ri-thumb-up-fill text-emerald-600"></i> Sentimen Positif
                             </span>
                         @elseif($c->sentiment === 'negatif')
-                            <span class="px-3 py-1 rounded-full font-black text-[10px] uppercase bg-slate-200 text-slate-800 border border-slate-300 flex items-center gap-1 font-heading">
-                                <i class="ri-thumb-down-fill text-slate-600"></i> Sentimen Negatif
+                            <span class="px-3 py-1 rounded-full font-black text-[10px] uppercase bg-rose-100 text-rose-800 border border-rose-300 flex items-center gap-1 font-heading">
+                                <i class="ri-thumb-down-fill text-rose-600"></i> Sentimen Negatif
                             </span>
                         @else
                             <span class="px-3 py-1 rounded-full font-black text-[10px] uppercase bg-slate-100 text-slate-700 border border-slate-200 flex items-center gap-1 font-heading">
-                                <i class="ri-chat-neutral-fill text-slate-400"></i> Sentimen Netral
+                                <i class="ri-chat-neutral-fill text-slate-500"></i> Sentimen Netral
                             </span>
                         @endif
                     </div>
@@ -408,6 +479,9 @@
         </div>
 
     </div>
+    </div> <!-- END OF RIGHT COLUMN -->
+
+</div> <!-- END OF 2-COLUMN GRID WRAPPER -->
 
     <!-- Related Articles Section -->
     @if($relatedArticles->isNotEmpty())

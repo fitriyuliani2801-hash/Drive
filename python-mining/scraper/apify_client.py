@@ -12,10 +12,10 @@ def get_apify_token():
                 for line in f:
                     if line.startswith("APIFY_API_TOKEN="):
                         return line.split("=")[1].strip()
-   except Exception as e:
-    print(f"[WARN] Gagal membaca token Apify dari .env: {e}")
+    except Exception as e:
+        print(f"[WARN] Gagal membaca token Apify dari .env: {e}")
 
-raise ValueError("APIFY_API_TOKEN tidak ditemukan di file .env")
+    raise ValueError("APIFY_API_TOKEN tidak ditemukan di file .env")"
 
 def scrape_comments(url, platform):
     token = get_apify_token()
@@ -73,8 +73,14 @@ def scrape_comments(url, platform):
 
 def scrape_instagram_feed(username, limit=3):
     token = get_apify_token()
-    actor_id = "apify~instagram-post-scraper"
-    input_data = {"username": [username], "resultsLimit": limit, "onlyPosts": True}
+    actor_id = "apify~instagram-scraper"
+    profile_url = f"https://www.instagram.com/{username}/"
+    input_data = {
+        "directUrls": [profile_url],
+        "resultsLimit": limit,
+        "resultsType": "posts",
+        "proxyConfiguration": {"useApifyProxy": True}
+    }
     api_url = f"https://api.apify.com/v2/actors/{actor_id}/run-sync-get-dataset-items?token={token}"
     posts = []
     
@@ -83,6 +89,11 @@ def scrape_instagram_feed(username, limit=3):
         response = requests.post(api_url, json=input_data, timeout=90)
         if response.status_code in [200, 201]:
             items = response.json()
+            # Cek jika ada error dari instagram
+            if isinstance(items, list) and len(items) > 0 and "error" in items[0]:
+                print(f"[Apify Instagram Scraper Error] {items[0].get('errorDescription')}")
+                return []
+                
             for item in items:
                 short_code = item.get("shortCode") or item.get("code")
                 url = item.get("url") or item.get("postUrl")
@@ -101,14 +112,20 @@ def scrape_instagram_feed(username, limit=3):
                     "image_url": image_url,
                     "author": f"@{username}"
                 })
+        else:
+            print(f"[Apify ERROR] Instagram feed HTTP {response.status_code}: {response.text}")
     except Exception as e:
         print(f"[Apify EXCEPTION] Instagram feed error: {e}")
     return posts
 
 def scrape_tiktok_feed(username, limit=3):
     token = get_apify_token()
-    actor_id = "apify~tiktok-scraper"
-    input_data = {"profiles": [username], "resultsLimit": limit}
+    actor_id = "clockworks~tiktok-scraper"
+    input_data = {
+        "profiles": [username],
+        "resultsLimit": limit,
+        "proxyConfiguration": {"useApifyProxy": True}
+    }
     api_url = f"https://api.apify.com/v2/actors/{actor_id}/run-sync-get-dataset-items?token={token}"
     videos = []
     
@@ -140,15 +157,21 @@ def scrape_tiktok_feed(username, limit=3):
                     "image_url": image_url,
                     "author": f"@{username}"
                 })
+        else:
+            print(f"[Apify ERROR] TikTok feed HTTP {response.status_code}: {response.text}")
     except Exception as e:
         print(f"[Apify EXCEPTION] TikTok feed error: {e}")
     return videos
 
 def scrape_facebook_feed(page_name, limit=3):
     token = get_apify_token()
-    actor_id = "apify~facebook-post-scraper"
+    actor_id = "apify~facebook-posts-scraper"
     page_url = f"https://www.facebook.com/{page_name}"
-    input_data = {"startUrls": [{"url": page_url}], "resultsLimit": limit}
+    input_data = {
+        "startUrls": [{"url": page_url}],
+        "resultsLimit": limit,
+        "proxyConfiguration": {"useApifyProxy": True}
+    }
     api_url = f"https://api.apify.com/v2/actors/{actor_id}/run-sync-get-dataset-items?token={token}"
     posts = []
     
@@ -157,6 +180,11 @@ def scrape_facebook_feed(page_name, limit=3):
         response = requests.post(api_url, json=input_data, timeout=90)
         if response.status_code in [200, 201]:
             items = response.json()
+            # Cek jika ada error dari facebook
+            if isinstance(items, list) and len(items) > 0 and "error" in items[0]:
+                print(f"[Apify Facebook Scraper Error] {items[0].get('errorDescription')}")
+                return []
+                
             for item in items:
                 url = item.get("url")
                 
@@ -178,6 +206,8 @@ def scrape_facebook_feed(page_name, limit=3):
                     "image_url": image_url,
                     "author": page_name
                 })
+        else:
+            print(f"[Apify ERROR] Facebook feed HTTP {response.status_code}: {response.text}")
     except Exception as e:
         print(f"[Apify EXCEPTION] Facebook feed error: {e}")
     return posts

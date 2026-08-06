@@ -96,10 +96,10 @@
 
                         <div class="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs font-medium">
                             <div class="flex items-center gap-2">
-                                <span class="px-2.5 py-0.5 rounded-md bg-blue-100 text-brand-800 font-extrabold text-[10px]">
+                                <span class="px-2.5 py-0.5 rounded-md bg-emerald-100 text-emerald-800 font-extrabold text-[10px]">
                                     👍 {{ $article->positive_count }}
                                 </span>
-                                <span class="px-2.5 py-0.5 rounded-md bg-slate-200 text-slate-700 font-extrabold text-[10px]">
+                                <span class="px-2.5 py-0.5 rounded-md bg-rose-100 text-rose-800 font-extrabold text-[10px]">
                                     👎 {{ $article->negative_count }}
                                 </span>
                             </div>
